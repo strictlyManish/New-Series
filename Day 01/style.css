@@ -1,0 +1,26 @@
+html, body {
+  background-color: black;
+  color: white;
+  font-size: large;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.box {
+  display: flex;
+  gap: 2rem;
+}
+.box .card {
+  background-color: rgb(44, 44, 44);
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+.box .card button {
+  padding: 0.5rem;
+  background-color: violet;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: white;
+}/*# sourceMappingURL=style.css.map */
