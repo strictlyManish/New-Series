@@ -1,48 +1,62 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-function Creat(props) {
-    const {setTodos} = props
-   
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
+function Creat({ setTodos }) {
+  const [tasks, setTasks] = useState("");
+  const [isComplited, setComplited] = useState(false);
 
-    const submit = (e) => {
-        e.preventDefault();
-        const newuser = { name, age };
-        setTodos((prev)=> [...prev,newuser])
-    };
+  const getData = (e) => {
+    e.preventDefault();
+    if (!tasks.trim()) return; // stop if empty
 
+    const newUser = { tasks, isComplited };
 
+    // get existing tasks from localStorage
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    // add the new one
+    const updatedTasks = [...storedTasks, newUser];
+
+    // save back to localStorage
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    toast.success("Task Added");
+
+    // update React state
+    setTodos(updatedTasks);
+
+    // reset inputs
+    setTasks("");
+    setComplited(false);
+  };
 
   return (
-    <form
-      onSubmit={(e) => submit(e)}
-      className=" w-fit flex flex-col gap-5 p-5 justify-start items-start"
-    >
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        type="text"
-        placeholder="Enter name"
-        className="bg-gray-700 text-white outline-none p-2 "
-        name="name"
-        minLength="3"
-        maxLength="12"
-        required
-      />
-      <input
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-        type="number"
-        placeholder="Enter age"
-        className="bg-gray-700 text-white outline-none p-2 "
-        name="age"
-        minLength="3"
-        maxLength="12"
-        required
-      />
-      <button className=" bg-zinc-700 px-5 py-2 rounded-full">Add task</button>
-    </form>
+    <div className="flex flex-col gap-4 mt-5 pb-2 w-full sm:w-3/4 md:w-1/2">
+      <form onSubmit={getData} className="flex flex-col gap-4">
+        <input
+          onChange={(e) => setTasks(e.target.value)}
+          value={tasks}
+          type="text"
+          placeholder="Enter task here..."
+          className="outline-none p-2 text-lg sm:text-xl md:text-2xl bg-transparent font-mono w-full border-b border-gray-600 focus:border-gray-300 transition-colors"
+          name="task"
+        />
+        <div className="flex flex-col sm:flex-row justify-between bg-gray-700 p-2 rounded-full gap-3 sm:gap-0">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              onChange={(e) => setComplited(e.target.checked)}
+              checked={isComplited}
+              type="checkbox"
+              name="checkbox"
+              className="appearance-none h-5 w-5 rounded-full border border-gray-400 checked:bg-gray-50 checked:border-gray-500 cursor-pointer"
+            />
+            Completed
+          </label>
+          <button className="bg-gray-600 rounded-full p-2 sm:px-4 cursor-pointer active:shadow-2xl text-sm sm:text-base md:text-lg">
+            Add Task
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 

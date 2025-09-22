@@ -1,24 +1,31 @@
-function Read(props) {
-  const { todos, setTodos } = props;
+import React from "react";
+
+function Read({ todos }) {
+  let data = JSON.parse(localStorage.getItem("tasks")) || todos;
+
+  const renderTodos = data.map((todo, idx) => {
+    return (
+      <li
+        key={idx}
+        className="mt-2 text-[16px] capitalize px-10 py-3 rounded-full shadow-full"
+        style={
+          todo.isComplited
+            ? { backgroundColor: "darkgreen" }
+            : { backgroundColor: "tomato" }
+        }
+      >
+        {idx + 1} {todo.tasks}
+      </li>
+    );
+  });
+
   return (
-    <ol className="w-[50vh] mt-2">
-      {todos.map((item, idx) => (
-        <li
-          key={idx}
-          className="bg-gray-500/40 backdrop-blur-3xl w-full p-3 mt-2 rounded-2xl shadow-lg"
-        >
-          <p className="font-semibold">{item.name}</p>
-          <div className="flex items-end justify-end gap-2 mt-2">
-            <button className="bg-gray-500/70 hover:bg-gray-700 text-white rounded-2xl px-5 py-1">
-              Delete
-            </button>
-            <button className="bg-green-800/70 hover:bg-green-800 text-white rounded-2xl px-5 py-1">
-              Edit
-            </button>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <div>
+      <h2 className="capitalize">Pending task details</h2>
+      <ul className="mt-5 h-[72vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+        {renderTodos}
+      </ul>
+    </div>
   );
 }
 
