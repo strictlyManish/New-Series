@@ -1,57 +1,55 @@
 import React, { useState } from "react";
 
 function App() {
-  const users = [
-    {
-      name: "Raj Sharma",
-      img: "https://randomuser.me/api/portraits/men/32.jpg",
-      age: 25,
-      city: "Mumbai",
-    },
-    {
-      name: "Manish Kumar",
-      img: "https://randomuser.me/api/portraits/men/45.jpg",
-      age: 30,
-      city: "Delhi",
-    },
-    {
-      name: "Priya Singh",
-      img: "https://randomuser.me/api/portraits/women/22.jpg",
-      age: 18,
-      city: "Bengaluru",
-    },
-    {
-      name: "Amit Verma",
-      img: "https://randomuser.me/api/portraits/men/65.jpg",
-      age: 28,
-      city: "Kolkata",
-    },
-    {
-      name: "Neha Kapoor",
-      img: "https://randomuser.me/api/portraits/women/12.jpg",
-      age: 26,
-      city: "Chennai",
-    },
-  ];
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
 
-  const render = users.map((user, idx) => {
-    const { name, img, age, city } = user;
-    return (
-      <div key={idx} className="bg-gray-800 px-10 py-3 flex flex-col items-start gap-2 hover:scale-[1.05] transition-all hover:bg-amber-900">
-        <img src={img} alt={name + img} className="rounded-[50%] w-full hover:scale-[1.06] transition-all"/>
-        <h2>{name}</h2>
-        <p>Age : {age}</p>
-        <h3>{city}</h3>
-        <p>Status : {age <= 18 ? 'Sinlge':'not to be Sure'}</p>
-      </div>
-    );
-  });
+  const sumbit = (e) => {
+    e.preventDefault();
+    const data = e.target;
+
+    const main_Data = [];
+   
+
+    for(let i = 0; i<data.length-1;i++){
+      main_Data.push({ [data[i].name]: data[i].value })
+    };
+
+    console.log(main_Data);
+  };
 
   return (
-    <div className="bg-gray-800 text-white h-screen w-screen flex justify-center items-center flex-col">
-      <div className="bg-gray-600 p-5 text-center rounded">
-        <h2>Employ Dashbord</h2>
-        <div className="flex gap-10 mt-5">{render}</div>
+    <div className="h-screen w-screen bg-gray-900 text-white">
+      <h2 className="text-2xl p-5 font-sans ">Simple Login Form</h2>
+      <div className="flex justify-around">
+        <form
+          onSubmit={(e) => sumbit(e)}
+          className=" w-fit flex flex-col gap-5 p-5 justify-start items-start"
+        >
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            type="text"
+            placeholder="Enter name"
+            className="bg-gray-700 text-white outline-none p-2 "
+            name="name"
+          />
+          <input
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            type="number"
+            placeholder="Enter age"
+            className="bg-gray-700 text-white outline-none p-2 "
+            name="age"
+
+          />
+          <button className=" bg-zinc-700 px-5 py-2 rounded-full">
+            Add task
+          </button>
+        </form>
+        <div>
+          <p>Pending Task</p>
+        </div>
       </div>
     </div>
   );
