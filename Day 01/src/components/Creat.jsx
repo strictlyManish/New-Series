@@ -1,66 +1,41 @@
+import { nanoid } from "nanoid";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 
-function Creat({ setTodos }) {
-  const [tasks, setTasks] = useState("");
-  const [isComplited, setComplited] = useState(false);
+function Creat(props) {
+  const { data, setData } = props;
+  const [title, setTitle] = useState("");
 
-  const getData = (e) => {
+  const sumbitData = (e) => {
     e.preventDefault();
-    if (!tasks.trim()) return;
 
-    const newUser = { tasks, isComplited };
+    if (title.trim().length === 0) return;
 
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const newUser = {
+      title,
+      id: nanoid(6),
+      isComplited: false,
+    };
 
-    const isDuplicate = storedTasks.some(
-      (item) => item.tasks.trim().toLowerCase() === tasks.trim().toLowerCase()
-    );
-
-    if (isDuplicate) {
-      toast.error("Task already exists!");
-      return;
-    }
-
-    const updatedTasks = [...storedTasks, newUser];
-
-  
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    toast.success("Task Added");
-
-    setTodos(updatedTasks);
-    setTasks("");
-    setComplited(false);
+    setData([...data,newUser])
+    setTitle("");
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-5 pb-2 w-full sm:w-3/4 md:w-1/2">
-      <form onSubmit={getData} className="flex flex-col gap-4">
+    <form onSubmit={(e) => sumbitData(e)}>
+      <div className="flex flex-col gap-5">
         <input
-          onChange={(e) => setTasks(e.target.value)}
-          value={tasks}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           type="text"
-          placeholder="Enter task here..."
-          className="outline-none p-2 text-lg sm:text-xl md:text-2xl bg-transparent font-mono w-full border-b border-gray-600 focus:border-gray-300 transition-colors"
-          name="task"
+          name="title"
+          placeholder="Task Details. . ."
+          className="outline-none border-b-2 w-[50vw] text-[18px] pb-1.5 border-pink-900"
         />
-        <div className="flex flex-col sm:flex-row justify-between bg-gray-700 p-2 rounded-full gap-3 sm:gap-0">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              onChange={(e) => setComplited(e.target.checked)}
-              checked={isComplited}
-              type="checkbox"
-              name="checkbox"
-              className="appearance-none h-5 w-5 rounded-full border border-gray-400 checked:bg-gray-50 checked:border-gray-500 cursor-pointer"
-            />
-            Completed
-          </label>
-          <button className="bg-gray-600 rounded-full p-2 sm:px-4 cursor-pointer active:shadow-2xl text-sm sm:text-base md:text-lg">
-            Add Task
-          </button>
-        </div>
-      </form>
-    </div>
+        <button className="bg-pink-700 w-fit px-10 py-2 rounded-full">
+          Create task
+        </button>
+      </div>
+    </form>
   );
 }
 
