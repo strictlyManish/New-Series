@@ -7,24 +7,28 @@ function Creat({ setTodos }) {
 
   const getData = (e) => {
     e.preventDefault();
-    if (!tasks.trim()) return; // stop if empty
+    if (!tasks.trim()) return;
 
     const newUser = { tasks, isComplited };
 
-    // get existing tasks from localStorage
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    // add the new one
+    const isDuplicate = storedTasks.some(
+      (item) => item.tasks.trim().toLowerCase() === tasks.trim().toLowerCase()
+    );
+
+    if (isDuplicate) {
+      toast.error("Task already exists!");
+      return;
+    }
+
     const updatedTasks = [...storedTasks, newUser];
 
-    // save back to localStorage
+  
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     toast.success("Task Added");
 
-    // update React state
     setTodos(updatedTasks);
-
-    // reset inputs
     setTasks("");
     setComplited(false);
   };
