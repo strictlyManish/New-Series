@@ -1,11 +1,9 @@
-import Read from "./components/Read";
-import Creat from "./components/Creat";
+import Navigation from "./components/Navigation";
 
 function App() {
   return (
-    <div className="bg-gray-800 text-white h-screen w-screen flex justify-between p-5 overflow-hidden">
-      <Creat/>
-      <Read />
+    <div className="h-screen w-screen bg-gray-900 text-white p-5">
+      <Navigation/>
     </div>
   );
 }
