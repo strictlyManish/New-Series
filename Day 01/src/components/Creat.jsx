@@ -25,16 +25,17 @@ function Creat(props) {
 
   return (
     <form onSubmit={(e) => sumbitData(e)}>
-      <div className="flex flex-col gap-5">
+      <h1 className="text-3xl">Set <span className="text-orange-700">Reminders</span> for tasks</h1>
+      <div className="flex flex-col gap-5 mt-10">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           type="text"
           name="title"
-          placeholder="Task Details"
-          className="outline-none border-b-2 w-[50vw] text-[18px] pb-1.5 border-pink-900 italic"
+          placeholder="Tasks"
+          className="outline-none border-b-2 w-[50vw] text-[18px] pb-1.5 border-gray-600"
         />
-        <button className="bg-pink-700 w-fit px-6 py-2 rounded-full uppercase italic font-mono active:scale-95 transition-all cursor-pointer">
+        <button className="bg-gray-900 w-fit px-6 py-2 rounded-md font-mono active:scale-95 transition-all cursor-pointer">
           Create task
         </button>
       </div>
