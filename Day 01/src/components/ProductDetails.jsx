@@ -11,7 +11,7 @@ function ProductDetails() {
 
 
   return (
-    <div className="p-5 w-[50vw]">
+    <div className="p-5 w-[50vw] bg-gray-700 rounded">
       <h1 className="text-3xl p-5">{param.fruit}</h1>
       <div className="flex flex-col gap-5">
         <p>
