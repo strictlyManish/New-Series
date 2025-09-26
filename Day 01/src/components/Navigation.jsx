@@ -2,42 +2,29 @@ import { NavLink } from "react-router-dom";
 
 function Navigation() {
   return (
-    <nav className="flex gap-4 p-4 bg-gray-900 text-white">
-      <NavLink 
-        to="/" 
-        className={({ isActive }) =>
-          isActive ? "text-blue-400 font-bold" : "text-white"
-        }
-      >
+    <div className="flex gap-5 justify-center py-5">
+      <NavLink to="/" className={(e) => (e.isActive ? "text-pink-500" : "")}>
         Home
       </NavLink>
-
-      <NavLink 
-        to="/about" 
-        className={({ isActive }) =>
-          isActive ? "text-blue-400 font-bold" : "text-white"
-        }
-      >
-        About
-      </NavLink>
-
-      <NavLink 
-        to="/contact" 
-        className={({ isActive }) =>
-          isActive ? "text-blue-400 font-bold" : "text-white"
-        }
+      <NavLink
+        to="/contact"
+        className={(e) => (e.isActive ? "text-pink-500" : "")}
       >
         Contact
       </NavLink>
-      <NavLink 
-        to="/service" 
-        className={({ isActive }) =>
-          isActive ? "text-blue-400 font-bold" : "text-white"
-        }
+      <NavLink
+        to="/service"
+        className={(e) => (e.isActive ? "text-pink-500" : "")}
       >
         Services
       </NavLink>
-    </nav>
+      <NavLink
+        to="/about"
+        className={(e) => (e.isActive ? "text-pink-500" : "")}
+      >
+        About
+      </NavLink>
+    </div>
   );
 }
 
