@@ -30,10 +30,3 @@
     scrollbar-color: #888 #26262600;
     /* thumb color, track color */
 }
-
-.box{
-    padding: 10px;
-    width: 25vw;
-    background-color: rgba(128, 128, 128, 0.156);
-    border-radius: 12px;
-}

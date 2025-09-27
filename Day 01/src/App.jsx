@@ -1,13 +1,15 @@
-import Navigation from "./components/Navigation";
-import Mainroutes from "./routes/Mainroutes"
-
-
+import Read from "./pages/Read";
+import Create from "./pages/Create";
+import Routes from "./Routes/Mainroutes";
 
 function App() {
   return (
-    <div className="h-screen w-screen bg-gray-900 text-white">
-      <Navigation/>
-      <Mainroutes/>
+    <div className="bg-gray-900 h-screen w-screen text-white p-6">
+      <div className="flex justify-between">
+        <Create />
+        <Read />
+      </div>
+      <Routes />
     </div>
   );
 }
