@@ -7,7 +7,7 @@ function Details() {
 
   const [data,setData] = useContext(RecipiesContext);
   const {id} = useParams();
-  const userdata = data.filter((obj)=> id == obj.id);
+  const userdata = data.filter((obj)=> id === obj.id);
 
   const naviagete = useNavigate();
 

@@ -21,9 +21,8 @@ function CreateRecipe() {
     newrecipe.id =nanoid(4);
     setData([...data,newrecipe])
     reset();
+    toast.success('Recipes Created')
     navigate('/recipies');
-
-    console.log(newrecipe);
   };
 
   return (
@@ -67,7 +66,7 @@ function CreateRecipe() {
                     minLength: { value: 3, message: "At least 3 characters" },
                   })}
                 />
-                {errors.name && (
+                {errors.recipeName && (
                   <p className="text-red-400 text-[10px] ">{errors.recipeName.message}</p>
                 )}
               </div>
@@ -82,7 +81,7 @@ function CreateRecipe() {
                     required: "Chef name is required",
                   })}
                 />
-                {errors.chef && (
+                {errors.chiefName && (
                   <p className="text-red-400 text-[10px] ">{errors.chiefName.message}</p>
                 )}
               </div>
@@ -98,7 +97,7 @@ function CreateRecipe() {
                     minLength: { value: 10, message: "At least 10 characters" },
                   })}
                 ></textarea>
-                {errors.description && (
+                {errors.recipeDesc && (
                   <p className="text-red-400 text-[10px] ">{errors.recipeDesc.message}</p>
                 )}
               </div>
@@ -113,7 +112,7 @@ function CreateRecipe() {
                     required: "Ingredients are required",
                   })}
                 ></textarea>
-                {errors.ingredients && (
+                {errors.recipeIngredients && (
                   <p className="text-red-400 text-[10px] ">
                     {errors.recipeIngredients.message}
                   </p>
