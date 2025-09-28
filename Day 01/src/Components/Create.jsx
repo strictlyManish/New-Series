@@ -19,13 +19,11 @@ function CreateRecipe() {
 
   const creatrecipies = (newrecipe) => {
     newrecipe.id =nanoid(4);
-
-    const copydata = [...data];
-    copydata.push(newrecipe);
-    setData(copydata);
-    toast.success('Recipie Created');
+    setData([...data,newrecipe])
     reset();
-    navigate('/recipies')
+    navigate('/recipies');
+
+    console.log(newrecipe);
   };
 
   return (
@@ -64,13 +62,13 @@ function CreateRecipe() {
                   type="text"
                   placeholder="Recipe name"
                   className="w-full p-3 rounded-md bg-gray-600 text-white placeholder-gray-400 focus:outline-none"
-                  {...register("name", {
+                  {...register("recipeName", {
                     required: "Recipe name is required",
                     minLength: { value: 3, message: "At least 3 characters" },
                   })}
                 />
                 {errors.name && (
-                  <p className="text-red-400 text-[10px] ">{errors.name.message}</p>
+                  <p className="text-red-400 text-[10px] ">{errors.recipeName.message}</p>
                 )}
               </div>
 
@@ -80,12 +78,12 @@ function CreateRecipe() {
                   type="text"
                   placeholder="Chef name"
                   className="w-full p-3 rounded-md bg-gray-600 text-white placeholder-gray-400 focus:outline-none"
-                  {...register("chef", {
+                  {...register("chiefName", {
                     required: "Chef name is required",
                   })}
                 />
                 {errors.chef && (
-                  <p className="text-red-400 text-[10px] ">{errors.chef.message}</p>
+                  <p className="text-red-400 text-[10px] ">{errors.chiefName.message}</p>
                 )}
               </div>
 
@@ -95,13 +93,13 @@ function CreateRecipe() {
                   placeholder="Recipe description..."
                   rows="3"
                   className="w-full p-2 rounded-md bg-gray-600 text-white placeholder-gray-400 focus:outline-none resize-none"
-                  {...register("description", {
+                  {...register("recipeDesc", {
                     required: "Description is required",
                     minLength: { value: 10, message: "At least 10 characters" },
                   })}
                 ></textarea>
                 {errors.description && (
-                  <p className="text-red-400 text-[10px] ">{errors.description.message}</p>
+                  <p className="text-red-400 text-[10px] ">{errors.recipeDesc.message}</p>
                 )}
               </div>
 
@@ -111,13 +109,13 @@ function CreateRecipe() {
                   placeholder="Recipe ingredients..."
                   rows="2"
                   className="w-full p-2 rounded-md bg-gray-600 text-white placeholder-gray-400 focus:outline-none resize-none"
-                  {...register("ingredients", {
+                  {...register("recipeIngredients", {
                     required: "Ingredients are required",
                   })}
                 ></textarea>
                 {errors.ingredients && (
                   <p className="text-red-400 text-[10px] ">
-                    {errors.ingredients.message}
+                    {errors.recipeIngredients.message}
                   </p>
                 )}
               </div>
