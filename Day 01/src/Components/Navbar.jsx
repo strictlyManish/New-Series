@@ -2,22 +2,19 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
-// Define navigation links as an array of objects for easier management
 const navLinks = [
   { path: "/", label: "Home" },
   { path: "/recipies", label: "Recipes" },
   { path: "/about", label: "About" },
-  { path: "/create-recipes", label: "Create Recipe", isButton: true }, // Special style for this one
+  { path: "/create-recipes", label: "Create Recipe", isButton: true },
 ];
 
 function Navbar() {
-  // State to track if the page has been scrolled
   const [scrolled, setScrolled] = useState(false);
 
-  // Effect to add and remove the scroll event listener
   useEffect(() => {
     const handleScroll = () => {
-      // Set scrolled to true if user has scrolled more than 20px, otherwise false
+      
       setScrolled(window.scrollY > 20);
     };
 
@@ -47,23 +44,20 @@ function Navbar() {
           <NavLink
             key={link.path}
             to={link.path}
-            // The function inside `className` receives { isActive } from NavLink
             className={({ isActive }) =>
               `relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-full
                ${
                  link.isButton
-                   ? "bg-orange-500 text-white hover:bg-orange-600" // Button style
+                   ? "bg-orange-500 text-white hover:bg-orange-600" 
                    : isActive
-                   ? "text-white" // Active link text color
-                   : "text-gray-400 hover:text-white" // Inactive link text color
+                   ? "text-white"
+                   : "text-gray-400 hover:text-white"
                }`
             }
           >
             {({ isActive }) => (
               <>
-                {/* This is the animated "pill" that slides behind the active link.
-                  'layoutId' is the magic that tells framer-motion to animate between elements.
-                */}
+               
                 {isActive && !link.isButton && (
                   <motion.div
                     className="absolute inset-0 bg-gray-600 rounded-full z-[-1]"

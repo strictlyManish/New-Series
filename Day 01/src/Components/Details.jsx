@@ -1,118 +1,156 @@
-import React, { useContext, useMemo } from "react";
-import { RecipiesContext } from "../Context/Recipe";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion"; // Import motion
+import { useContext, useEffect } from "react";
+import { RecipiesContext } from "./../Context/Recipe";
+import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 function Details() {
-  const [data] = useContext(RecipiesContext);
-  const { id } = useParams();
-  const navigate = useNavigate(); // Corrected typo: 'navigate'
+  const [data, setData] = useContext(RecipiesContext);
+  const params = useParams();
+  const navigate = useNavigate();
+  const recipe = data.find((obj) => obj.id == params.id);
 
-  // More efficient: Use .find() instead of .filter() to get a single object.
-  // useMemo prevents recalculating this on every render unless data or id changes.
-  const recipe = useMemo(() => data.find((obj) => id === obj.id), [data, id]);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: recipe,
+  });
 
-  // Handler for the favorite button (you can add your logic here)
-  const handleFavorite = () => {
-    alert(`Added ${recipe.recipeName} to favorites!`);
-    // Example: addToFavorites(recipe.id);
+  useEffect(() => {
+    if (recipe) {
+      reset(recipe);
+    }
+  }, [recipe, reset]);
+
+  const imageUrl = watch("url");
+
+  const updateRecipe = (updatedData) => {
+    
   };
 
-  // Graceful handling if data is loading or recipe not found
   if (!recipe) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-white">
-        <h2 className="text-2xl font-bold mb-4">Recipe not found! 😢</h2>
-        <Link to="/recipes" className="px-6 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 transition">
-          Go Back to Recipes
-        </Link>
+      <div className="text-center mt-20">
+        <h1 className="text-2xl font-bold">Recipe not found! 😥</h1>
       </div>
     );
   }
 
-  // Animation variants for the main container
-  const pageVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.4 } },
-  };
-
   return (
-    <motion.div
-      className="max-w-6xl w-full h-full my-10 mx-auto text-white rounded-2xl overflow-hidden 
-                 flex flex-col md:flex-row bg-gray-800 shadow-2xl shadow-black/50"
-      variants={pageVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-    >
-      {/* ===== Image Section (Responsive) ===== */}
-      <div className="w-full md:w-1/2 h-80 md:h-auto">
-        <img 
-          src={recipe.url} 
-          alt={recipe.recipeName} 
-          className="w-full h-full object-cover" 
-        />
-      </div>
-
-      {/* ===== Content Section (Responsive & Animated) ===== */}
-      <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
-        <div>
-          <motion.h1 
-            className="font-extrabold uppercase text-orange-500 text-3xl md:text-4xl mb-2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 0.2, duration: 0.5 } }}
-          >
-            {recipe.recipeName}
-          </motion.h1>
-          <p className="font-semibold text-gray-400 text-lg mb-6">by {recipe.chiefName}</p>
-
-          <div className="space-y-5 text-gray-200">
+    <div className="container mx-auto px-10 mt-10">
+      <h1 className="text-4xl font-bold mb-8">Edit Your Recipe</h1>
+      <form
+        onSubmit={handleSubmit(updateRecipe)}
+        className="max-w-4xl mx-auto"
+      >
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Form Fields Column */}
+          <div className="flex-1 space-y-4">
+            {/* Input fields for various recipe details */}
             <div>
-              <h3 className="font-bold text-lg mb-2 text-orange-400">INGREDIENTS</h3>
-              {/* Display ingredients as a list for better readability */}
-              <ul className="list-disc list-inside pl-2 font-light space-y-1">
-                {recipe.recipeIngredients.split(',').map((item, index) => (
-                  <li key={index}>{item.trim()}</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-2 text-orange-400">DESCRIPTION</h3>
-              <p className="font-medium leading-relaxed">{recipe.recipeDesc}</p>
+              <label className="block mb-1 text-sm font-medium">Recipe Name</label>
+              <input
+                type="text"
+                className="w-full p-3 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                {...register("recipeName", {
+                  required: "Recipe name is required",
+                  minLength: { value: 3, message: "At least 3 characters" },
+                })}
+              />
+              {errors.recipeName && <p className="text-red-400 text-xs mt-1">{errors.recipeName.message}</p>}
             </div>
 
             <div>
-              <h3 className="font-bold text-lg mb-2 text-orange-400">CATEGORIES</h3>
-              <p className="font-mono text-gray-300 bg-gray-700 inline-block px-3 py-1 rounded-md">{recipe.categories}</p>
+              <label className="block mb-1 text-sm font-medium">Image URL</label>
+              <input
+                type="text"
+                className="w-full p-3 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                {...register("url", {
+                  required: "Image URL is required",
+                  pattern: { value: /^(ftp|http|https):\/\/[^ "]+$/, message: "Enter a valid URL" },
+                })}
+              />
+              {errors.url && <p className="text-red-400 text-xs mt-1">{errors.url.message}</p>}
+            </div>
+
+            {/* Other input fields follow the same pattern... */}
+            <div>
+              <label className="block mb-1 text-sm font-medium">Chef Name</label>
+              <input
+                type="text"
+                className="w-full p-3 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                {...register("chiefName", { required: "Chef name is required" })}
+              />
+              {errors.chiefName && <p className="text-red-400 text-xs mt-1">{errors.chiefName.message}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-1 text-sm font-medium">Categories</label>
+              <input
+                type="text"
+                className="w-full p-3 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                {...register("categories", { required: "Category is required" })}
+              />
+              {errors.categories && <p className="text-red-400 text-xs mt-1">{errors.categories.message}</p>}
+            </div>
+          </div>
+
+          {/* Textareas & Image Preview Column */}
+          <div className="flex-1 space-y-4">
+            <label className="block mb-1 text-sm font-medium">Image Preview</label>
+            <div className="w-full h-48 rounded-lg overflow-hidden bg-gray-700 flex items-center justify-center">
+              {imageUrl ? (
+                <img src={imageUrl} alt="Recipe Preview" className="object-cover w-full h-full" />
+              ) : (
+                <span className="text-gray-400">Image will appear here</span>
+              )}
+            </div>
+
+            <div>
+              <label className="block mb-1 text-sm font-medium">Description</label>
+              <textarea
+                rows="4"
+                className="w-full p-2 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none resize-none focus:ring-2 focus:ring-blue-500"
+                {...register("recipeDesc", {
+                  required: "Description is required",
+                  minLength: { value: 10, message: "At least 10 characters" },
+                })}
+              />
+              {errors.recipeDesc && <p className="text-red-400 text-xs mt-1">{errors.recipeDesc.message}</p>}
+            </div>
+
+            <div>
+              <label className="block mb-1 text-sm font-medium">Ingredients</label>
+              <textarea
+                rows="4"
+                className="w-full p-2 rounded-md bg-gray-700 placeholder-gray-400 focus:outline-none resize-none focus:ring-2 focus:ring-blue-500"
+                {...register("recipeIngredients", { required: "Ingredients are required" })}
+              />
+              {errors.recipeIngredients && <p className="text-red-400 text-xs mt-1">{errors.recipeIngredients.message}</p>}
             </div>
           </div>
         </div>
 
-        {/* ===== Button Section (Animated) ===== */}
-        <div className="flex gap-4 justify-end mt-8">
-          <motion.button
-            onClick={handleFavorite}
-            className="px-5 py-2 rounded-lg border border-orange-500 text-orange-500 font-semibold"
-            whileHover={{ scale: 1.05, backgroundColor: 'rgba(249, 115, 22, 0.1)' }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+        {/* Submit Button */}
+        <div className="flex justify-end gap-5 mt-8">
+          <button
+            type="submit"
+            className="px-8 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
           >
-            FAVORITE
-          </motion.button>
-          <motion.button
-            onClick={() => navigate("/recipies")}
-            className="px-5 py-2 rounded-lg bg-orange-500 text-white font-semibold"
-            whileHover={{ scale: 1.05, boxShadow: "0px 0px 8px rgb(249, 115, 22)" }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            Update Recipe
+          </button>
+          <button
+            onClick={()=>navigate('/recipies')}
+            className="px-8 py-3 bg-green-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
           >
-            BACK
-          </motion.button>
+            Go Back
+          </button>
         </div>
-      </div>
-    </motion.div>
+      </form>
+    </div>
   );
 }
 
