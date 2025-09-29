@@ -1,49 +1,45 @@
 import React, { useContext } from "react";
 import { RecipiesContext } from "../Context/Recipe";
- import { Link } from 'react-router-dom';
-
+import RecipeCard from "../Components/RecipeCard"; // Assuming you create this new component
+import { motion } from "framer-motion";
 
 function Recipies() {
   const [data] = useContext(RecipiesContext);
 
-  if (!data || data.length === 0) {
-    return <p className="text-white mt-5">No recipes found.</p>;
+  // Animation container variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        // Stagger the animation of children by 0.1s
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  // Improved loading/empty state display
+  if (!data) {
+    return <p className="text-white text-center mt-20 text-2xl">Loading Recipes...</p>;
+  }
+  if (data.length === 0) {
+    return <p className="text-gray-600 text-center mt-82 text-2xl">No recipes found. 😕</p>;
   }
 
   return (
-    <div className="flex gap-4 mt-5 flex-wrap min-h-screen overflow-y-hidden">
-      {data.map((obj) => (
-        <Link key={obj.id} to={`/recipies-details/${obj.id}`} >
-          <div
-            
-            className="w-75 rounded-2xl  p-4 flex flex-col gap-4 bg-gray-900 hover:shadow-2xl"
-          >
-            {/* Image */}
-            <div className="w-full h-40 bg-gray-800 rounded-xl flex items-center justify-center overflow-hidden">
-              <img
-                src={obj.url}
-                alt={obj.recipeName}
-                className="w-full h-full object-cover hover:scale-105 transition-all"
-              />
-            </div>
-
-            {/* Details */}
-            <div className="flex flex-col text-white font-semibold">
-              <span className="text-lg">{obj.recipeName}</span>
-              <span className="text-sm text-gray-300">{obj.recipeDesc}</span>
-              <span className="text-sm text-gray-400">By {obj.chiefName}</span>
-            </div>
-
-            {/* Favorite Button */}
-            <div className="flex justify-end">
-              <button className="px-4 py-1 bg-gray-800 text-white font-bold rounded-lg border border-white/50 hover:bg-gray-700 transition">
-                FAVORITE
-              </button>
-            </div>
-          </div>
-        </Link>
-      ))}
-    </div>
+    <motion.div
+      className="max-w-7xl mx-auto p-4 md:p-8 mt-20"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {/* Responsive Grid Layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {data.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
+        ))}
+      </div>
+    </motion.div>
   );
 }
 
