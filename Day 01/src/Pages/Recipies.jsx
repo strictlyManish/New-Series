@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { RecipiesContext } from "./../Context/Recipe";
 import RecipeCard from "../Components/RecipeCard";
+import Loader from './../Components/Loader';
 
 function Recipies() {
   const [data] = useContext(RecipiesContext);
@@ -8,7 +9,7 @@ function Recipies() {
   if (!data || data.length === 0) {
     return (
       <div className="font-sans flex justify-center items-center min-h-screen p-10 text-gray-400 text-xl">
-        Recipe not found
+        <Loader/>
       </div>
     );
   }
