@@ -1,40 +1,86 @@
 import React, { useContext, useState, useEffect } from "react";
 import { RecipiesContext } from "./../Context/Recipe";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Details() {
   const [imgUrl, setImgUrl] = useState("");
-  const [data] = useContext(RecipiesContext);
-  const param = useParams();
+  const [recipeData, setRecipeData] = useState({
+    recipeName: "",
+    recipeIngredients: "",
+    recipeDesc: "",
+    categories: "",
+  });
 
-  // find the recipe instead of filter
+  const [data, setData] = useContext(RecipiesContext);
+  const param = useParams();
+  const navigate = useNavigate();
+
+  // Find the recipe by id
   const recipe = data.find((obj) => String(obj.id) === String(param.id));
 
   useEffect(() => {
-    if (recipe?.url) {
-      setImgUrl(recipe.url);
+    if (recipe) {
+      setImgUrl(recipe.url || "");
+      setRecipeData({
+        recipeName: recipe.recipeName || "",
+        recipeIngredients: recipe.recipeIngredients || "",
+        recipeDesc: recipe.recipeDesc || "",
+        categories: recipe.categories || "",
+      });
     }
   }, [recipe]);
 
-
+  const handleUpdate = () => {
+    const updatedData = data.map((item) =>
+      item.id === recipe.id ? { ...item, ...recipeData, url: imgUrl } : item
+    );
+    setData(updatedData);
+    toast.success("Recipe updated successfully!");
+    navigate("/recipies");
+  };
 
   return (
-    <div className="min-h-screen bg-transparent text-white flex items-center justify-center p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+    <div className="h-screen w-screen px-10 py-6 overflow-x-hidden text-gray-100 flex items-center justify-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl  p-8 rounded-2xl">
         {/* Left - Form */}
         <div className="flex flex-col gap-6">
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Recipe Title
-            </label>
-            <input
-              type="text"
-              defaultValue={recipe?.recipeName || ""}
-              placeholder="Enter recipe name"
-              className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm"
-            />
-          </div>
+          {["recipeName", "recipeIngredients", "recipeDesc", "categories"].map(
+            (field) => (
+              <div key={field}>
+                <label className="block text-sm font-medium mb-2 capitalize">
+                  {field === "recipeName"
+                    ? "Recipe Title"
+                    : field === "recipeIngredients"
+                    ? "Ingredients"
+                    : field === "recipeDesc"
+                    ? "Description"
+                    : "Categories"}
+                </label>
+                {field === "recipeIngredients" || field === "recipeDesc" ? (
+                  <textarea
+                    rows={field === "recipeDesc" ? 4 : 3}
+                    value={recipeData[field]}
+                    onChange={(e) =>
+                      setRecipeData({ ...recipeData, [field]: e.target.value })
+                    }
+                    placeholder={`Enter ${field}`}
+                    className="w-full p-3 rounded-2xl border border-gray-400 focus:border-green-600 outline-none shadow-sm resize-none"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={recipeData[field]}
+                    onChange={(e) =>
+                      setRecipeData({ ...recipeData, [field]: e.target.value })
+                    }
+                    placeholder={`Enter ${field}`}
+                    className="w-full p-3 rounded-2xl border border-gray-400 focus:border-green-600 outline-none shadow-sm"
+                  />
+                )}
+              </div>
+            )
+          )}
 
           {/* Image URL */}
           <div>
@@ -44,51 +90,14 @@ function Details() {
               placeholder="Paste image link"
               value={imgUrl}
               onChange={(e) => setImgUrl(e.target.value)}
-              className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm"
-            />
-          </div>
-
-          {/* Ingredients */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Ingredients
-            </label>
-            <textarea
-              defaultValue={recipe?.recipeIngredients || ""}
-              placeholder="List ingredients here..."
-              rows="3"
-              className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm resize-none"
-            />
-          </div>
-
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Description
-            </label>
-            <textarea
-              defaultValue={recipe?.recipeDesc || ""}
-              placeholder="Write cooking steps or description..."
-              rows="4"
-              className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm resize-none"
-            />
-          </div>
-
-          {/* Categories */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Categories</label>
-            <input
-              type="text"
-              defaultValue={recipe?.categories || ""}
-              placeholder="e.g. Dessert, Vegan"
-              className="w-1/2 p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm"
+              className="w-full p-3 rounded-2xl border border-gray-400 focus:border-green-600 outline-none shadow-sm"
             />
           </div>
         </div>
 
         {/* Right - Preview + Action */}
         <div className="flex flex-col items-center justify-between gap-6">
-          <div className="w-full h-72 md:h-[420px] flex items-center justify-center border border-gray-500 rounded-2xl shadow-sm overflow-hidden">
+          <div className="w-full h-72 md:h-[420px] flex items-center justify-center border border-gray-400 rounded-2xl shadow-sm overflow-hidden">
             {imgUrl ? (
               <img
                 src={imgUrl}
@@ -96,11 +105,14 @@ function Details() {
                 className="w-full h-full object-cover rounded-2xl"
               />
             ) : (
-              <p className="text-gray-400">Image preview</p>
+              <p className="text-gray-500">Image preview</p>
             )}
           </div>
-          <button className="w-full cursor-pointer py-3 rounded-2xl border border-white bg-gradient-to-r from-gray-900 to-gray-700 hover:from-white hover:to-gray-200 hover:text-black transition font-medium shadow-md">
-            Update Recipe
+          <button
+            onClick={handleUpdate}
+            className="w-full cursor-pointer py-3 rounded-2xl bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 text-white transition font-medium shadow-md"
+          >
+            ✅ Update Recipe
           </button>
         </div>
       </div>
