@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { RecipiesContext } from "./../Context/Recipe";
+import { useParams } from "react-router-dom";
 
-function Create() {
-
+function Details() {
   const [imgUrl, setImgUrl] = useState("");
+  const [data] = useContext(RecipiesContext);
+  const param = useParams();
+
+  // find the recipe instead of filter
+  const recipe = data.find((obj) => String(obj.id) === String(param.id));
+
+  useEffect(() => {
+    if (recipe?.url) {
+      setImgUrl(recipe.url);
+    }
+  }, [recipe]);
+
+
 
   return (
     <div className="min-h-screen bg-transparent text-white flex items-center justify-center p-6">
@@ -16,6 +30,7 @@ function Create() {
             </label>
             <input
               type="text"
+              defaultValue={recipe?.recipeName || ""}
               placeholder="Enter recipe name"
               className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm"
             />
@@ -39,6 +54,7 @@ function Create() {
               Ingredients
             </label>
             <textarea
+              defaultValue={recipe?.recipeIngredients || ""}
               placeholder="List ingredients here..."
               rows="3"
               className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm resize-none"
@@ -51,6 +67,7 @@ function Create() {
               Description
             </label>
             <textarea
+              defaultValue={recipe?.recipeDesc || ""}
               placeholder="Write cooking steps or description..."
               rows="4"
               className="w-full p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm resize-none"
@@ -62,6 +79,7 @@ function Create() {
             <label className="block text-sm font-medium mb-2">Categories</label>
             <input
               type="text"
+              defaultValue={recipe?.categories || ""}
               placeholder="e.g. Dessert, Vegan"
               className="w-1/2 p-3 rounded-2xl bg-transparent border border-gray-500 focus:border-white outline-none shadow-sm"
             />
@@ -82,7 +100,7 @@ function Create() {
             )}
           </div>
           <button className="w-full cursor-pointer py-3 rounded-2xl border border-white bg-gradient-to-r from-gray-900 to-gray-700 hover:from-white hover:to-gray-200 hover:text-black transition font-medium shadow-md">
-            Create Recipe
+            Update Recipe
           </button>
         </div>
       </div>
@@ -90,4 +108,4 @@ function Create() {
   );
 }
 
-export default Create;
+export default Details;
