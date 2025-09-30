@@ -20,7 +20,10 @@ function Details() {
   const recipe = data.find((obj) => String(obj.id) === String(param.id));
 
   useEffect(() => {
-    if (recipe) {
+    if (!recipe) {
+      toast.error("Recipe not found!");
+      navigate("/recipies");
+    } else {
       setImgUrl(recipe.url || "");
       setRecipeData({
         recipeName: recipe.recipeName || "",
@@ -29,7 +32,7 @@ function Details() {
         categories: recipe.categories || "",
       });
     }
-  }, [recipe]);
+  }, [recipe, navigate]);
 
   const handleUpdate = () => {
     const updatedData = data.map((item) =>
@@ -37,6 +40,13 @@ function Details() {
     );
     setData(updatedData);
     toast.success("Recipe updated successfully!");
+    navigate("/recipies");
+  };
+
+  const handleDelete = (id) => {
+    const updatedData = data.filter((item) => item.id !== id);
+    setData(updatedData);
+    toast.success("Recipe deleted successfully!");
     navigate("/recipies");
   };
 
@@ -108,6 +118,12 @@ function Details() {
               <p className="text-gray-500">Image preview</p>
             )}
           </div>
+          <button
+            onClick={() => handleDelete(recipe.id)}
+            className="w-full cursor-pointer py-3 rounded-2xl bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 text-white transition font-medium shadow-md"
+          >
+            ❌ Delete Recipe
+          </button>
           <button
             onClick={handleUpdate}
             className="w-full cursor-pointer py-3 rounded-2xl bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 text-white transition font-medium shadow-md"
