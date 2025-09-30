@@ -1,14 +1,9 @@
-import React from "react";
-import Mainroutes from "./Routes/Mainroutes";
-import Navbar from "./Components/Navbar";
+import React from 'react'
 
 function App() {
   return (
-    <div className="h-screen w-screen font-semibold bg-gray-900 text-white overflow-x-hidden">
-      <Navbar />
-      <Mainroutes />
-    </div>
-  );
+    <div>App</div>
+  )
 }
 
-export default App;
+export default App
