@@ -9,12 +9,6 @@ function RecipeCard({ recipe }) {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
   };
 
-  const handleFavoriteClick = (e) => {
-    e.stopPropagation(); 
-    e.preventDefault();
-    alert(`Added ${recipe.recipeName} to favorites!`);
-  };
-
   return (
     <motion.div variants={itemVariants} whileHover={{ y: -8, transition: { duration: 0.2 } }}>
       <Link to={`/details/${recipe.id}`} className="block">
@@ -39,12 +33,11 @@ function RecipeCard({ recipe }) {
           {/* Favorite Button */}
           <div className="flex justify-end mt-2">
             <motion.button
-              onClick={handleFavoriteClick}
-              className="px-4 py-2 bg-gray-800 text-orange-500 font-bold rounded-lg border border-orange-500/50"
+              className="px-4 py-2 bg-gray-800 text-sky-300 font-bold rounded-lg "
               whileHover={{ scale: 1.05, backgroundColor: 'rgba(249, 115, 22, 0.1)' }}
               whileTap={{ scale: 0.95 }}
             >
-              FAVORITE
+              MORE.
             </motion.button>
           </div>
         </div>

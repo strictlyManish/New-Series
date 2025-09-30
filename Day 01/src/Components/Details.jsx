@@ -28,10 +28,24 @@ function Details() {
     copydata[recipeIndx] = { ...copydata[recipeIndx], ...updatedData };
 
     setData(copydata);
-
     toast.success("Recipe updated");
     navigate("/recipies");
   };
+
+
+
+  const favbtn = (recipeToAdd) => {
+    const existingFavs = JSON.parse(localStorage.getItem("fav")) || [];
+    const isAlreadyFav = existingFavs.some((fav) => fav.id === recipeToAdd.id);
+    if (isAlreadyFav) {
+      toast.info("Recipe is already in your favorites! 😉");
+    } else {
+      const updatedFavs = [...existingFavs, recipeToAdd];
+      localStorage.setItem("fav", JSON.stringify(updatedFavs));
+      toast.success("Added to favorites! ❤️");
+    }
+  };
+
 
   if (!recipe) {
     return (
@@ -133,7 +147,13 @@ function Details() {
             <label className="block mb-1 text-sm font-medium">
               Image Preview
             </label>
-            <div className="w-full h-48 rounded-lg overflow-hidden bg-gray-700 flex items-center justify-center">
+            <div className="w-full relative h-48 rounded-lg overflow-hidden bg-gray-700 flex items-center justify-center">
+              <div
+                onClick={() => favbtn(recipe)}
+                className="hover:scale-110 cursor-pointer transition-all absolute top-0 right-0 p-2 text-2xl backdrop:blur-xl rounded"
+              >
+                ❤️
+              </div>
               {imageUrl ? (
                 <img
                   src={imageUrl}
@@ -188,7 +208,7 @@ function Details() {
         <div className="flex justify-end gap-5 mt-8">
           <button
             type="submit"
-            className="px-8 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
+            className="px-8 py-3 cursor-pointer bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors"
           >
             Update Recipe
           </button>

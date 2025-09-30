@@ -7,6 +7,7 @@ const navLinks = [
   { path: "/recipies", label: "Recipes" },
   { path: "/about", label: "About" },
   { path: "/create-recipes", label: "Create Recipe", isButton: true },
+  { path: "/favrate", label: "❤️" },
 ];
 
 function Navbar() {
@@ -36,8 +37,8 @@ function Navbar() {
       <div
         className={`flex items-center gap-2 p-2 rounded-full transition-all duration-300 ${
           scrolled
-            ? "bg-gray-900/60 backdrop-blur-lg shadow-lg"
-            : "bg-gray-800/80"
+            ? "bg-gray-400/5 backdrop-blur-3xl shadow-lg"
+            : "bg-gray-950/80"
         }`}
       >
         {navLinks.map((link) => (
@@ -45,7 +46,7 @@ function Navbar() {
             key={link.path}
             to={link.path}
             className={({ isActive }) =>
-              `relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-full
+              `relative px-4 py-2 text-md font-medium transition-colors duration-300 rounded-full
                ${
                  link.isButton
                    ? "bg-orange-500 text-white hover:bg-orange-600" 
