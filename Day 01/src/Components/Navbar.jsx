@@ -5,6 +5,7 @@ function Navbar() {
     <div className="flex justify-center items-center bg-red py-3 gap-16">
       <NavLink to="/">Home</NavLink>
       <NavLink to="/recipies">Recipes</NavLink>
+      <NavLink to="/favorite">Favorite</NavLink>
       <NavLink to="/create-recipies">Create Recipe</NavLink>
     </div>
   );

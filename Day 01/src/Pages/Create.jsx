@@ -20,9 +20,7 @@ function Create() {
 
   const onSubmit = (newdata) => {
     newdata.id = nanoid(6);
-    const copydata = [...data];
-    copydata.push(newdata);
-    setdata(copydata);
+    setdata([...data,newdata]);
     reset();
     toast.success("✅ Recipe Created Successfully!");
     navigate("/recipies");

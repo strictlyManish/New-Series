@@ -107,7 +107,7 @@ function Details() {
 
         {/* Right - Preview + Action */}
         <div className="flex flex-col items-center justify-between gap-6">
-          <div className="w-full h-72 md:h-[420px] flex items-center justify-center border border-gray-400 rounded-2xl shadow-sm overflow-hidden">
+          <div className="w-full mt-6 h-72 md:h-[420px] flex items-center justify-center rounded-2xl shadow-sm overflow-hidden">
             {imgUrl ? (
               <img
                 src={imgUrl}
