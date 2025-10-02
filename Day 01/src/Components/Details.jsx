@@ -1,136 +1,147 @@
-import React, { useContext, useState, useEffect } from "react";
-import { RecipiesContext } from "./../Context/Recipe";
+import React, { useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-
+import { RecipiesContext } from "./../Context/Recipe";
+import { useForm } from "react-hook-form";
+import {toast} from 'react-hot-toast'
 function Details() {
-  const [imgUrl, setImgUrl] = useState("");
-  const [recipeData, setRecipeData] = useState({
-    recipeName: "",
-    recipeIngredients: "",
-    recipeDesc: "",
-    categories: "",
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [data, setData] = useContext(RecipiesContext);
+
+  const recipe = data.find((obj) => String(obj.id) === id);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: recipe,
   });
 
-  const [data, setData] = useContext(RecipiesContext);
-  const param = useParams();
-  const navigate = useNavigate();
+  if (!recipe) {
+    return <h2 className="text-center text-red-500">Recipe not found</h2>;
+  }
 
-  // Find the recipe by id
-  const recipe = data.find((obj) => String(obj.id) === String(param.id));
-
-  useEffect(() => {
-    if (!recipe) {
-      toast.error("Recipe not found!");
-      navigate("/recipies");
-    } else {
-      setImgUrl(recipe.url || "");
-      setRecipeData({
-        recipeName: recipe.recipeName || "",
-        recipeIngredients: recipe.recipeIngredients || "",
-        recipeDesc: recipe.recipeDesc || "",
-        categories: recipe.categories || "",
-      });
-    }
-  }, [recipe, navigate]);
-
-  const handleUpdate = () => {
-    const updatedData = data.map((item) =>
-      item.id === recipe.id ? { ...item, ...recipeData, url: imgUrl } : item
-    );
-    setData(updatedData);
-    toast.success("Recipe updated successfully!");
+  const onSubmit = (newdata) => {
+    const idx = data.findIndex((obj) => obj.id === id);
+    const copudata = [...data];
+    copudata[idx] = { ...copudata, ...newdata };
+    setData(copudata);
+    toast.success('Successfully updated!');
     navigate("/recipies");
   };
 
-  const handleDelete = (id) => {
-    const updatedData = data.filter((item) => item.id !== id);
-    setData(updatedData);
-    toast.success("Recipe deleted successfully!");
+  const handleDelete = () => {
+    const del = data.filter((obj) => obj.id !== id);
+    setData(del);
+    toast.success("Recipe Deleted");
     navigate("/recipies");
   };
 
   return (
-    <div className="h-screen w-screen px-10 py-6 overflow-x-hidden text-gray-100 flex items-center justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl  p-8 rounded-2xl">
-        {/* Left - Form */}
-        <div className="flex flex-col gap-6">
-          {["recipeName", "recipeIngredients", "recipeDesc", "categories"].map(
-            (field) => (
-              <div key={field}>
-                <label className="block text-sm font-medium mb-2 capitalize">
-                  {field === "recipeName"
-                    ? "Recipe Title"
-                    : field === "recipeIngredients"
-                    ? "Ingredients"
-                    : field === "recipeDesc"
-                    ? "Description"
-                    : "Categories"}
-                </label>
-                {field === "recipeIngredients" || field === "recipeDesc" ? (
-                  <textarea
-                    rows={field === "recipeDesc" ? 4 : 3}
-                    value={recipeData[field]}
-                    onChange={(e) =>
-                      setRecipeData({ ...recipeData, [field]: e.target.value })
-                    }
-                    placeholder={`Enter ${field}`}
-                    className="w-full p-3 rounded-2xl border border-gray-400 focus:border-green-600 outline-none shadow-sm resize-none"
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={recipeData[field]}
-                    onChange={(e) =>
-                      setRecipeData({ ...recipeData, [field]: e.target.value })
-                    }
-                    placeholder={`Enter ${field}`}
-                    className="w-full p-3 rounded-2xl border border-gray-400 focus:border-green-600 outline-none shadow-sm"
-                  />
-                )}
-              </div>
-            )
-          )}
+    <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 p-8 ">
+      <div className="flex-1 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+        <img
+          src={recipe.url}
+          alt={recipe.recipeName}
+          className="w-full max-w-md rounded-xl shadow-md object-cover"
+        />
+        <h2 className="text-3xl font-bold mt-4">{recipe.recipeName}</h2>
+      </div>
 
-          {/* Image URL */}
+      <div className="flex-1 rounded-2xl shadow-xl p-8 backdrop-blur-lg">
+        <h2 className="text-2xl font-bold mb-6">Update Recipe</h2>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 gap-6"
+        >
           <div>
-            <label className="block text-sm font-medium mb-2">Image URL</label>
+            <label className="block text-sm font-medium mb-2">
+              Recipe Title
+            </label>
             <input
+              {...register("recipeName", {
+                required: "Recipe title is required",
+              })}
               type="text"
-              placeholder="Paste image link"
-              value={imgUrl}
-              onChange={(e) => setImgUrl(e.target.value)}
-              className="w-full p-3 rounded-2xl border border-gray-400 focus:border-green-600 outline-none shadow-sm"
+              className={`w-full p-3 rounded-xl border ${
+                errors.recipeName ? "border-red-400" : "border-gray-300"
+              } focus:border-green-500 outline-none shadow-sm`}
             />
-          </div>
-        </div>
-
-        {/* Right - Preview + Action */}
-        <div className="flex flex-col items-center justify-between gap-6">
-          <div className="w-full mt-6 h-72 md:h-[420px] flex items-center justify-center rounded-2xl shadow-sm overflow-hidden">
-            {imgUrl ? (
-              <img
-                src={imgUrl}
-                alt="preview"
-                className="w-full h-full object-cover rounded-2xl"
-              />
-            ) : (
-              <p className="text-gray-500">Image preview</p>
+            {errors.recipeName && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.recipeName.message}
+              </p>
             )}
           </div>
-          <button
-            onClick={() => handleDelete(recipe.id)}
-            className="w-full cursor-pointer py-3 rounded-2xl bg-gradient-to-r from-red-600 to-red-400 hover:from-red-700 hover:to-red-500 text-white transition font-medium shadow-md"
-          >
-            ❌ Delete Recipe
-          </button>
-          <button
-            onClick={handleUpdate}
-            className="w-full cursor-pointer py-3 rounded-2xl bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 text-white transition font-medium shadow-md"
-          >
-            ✅ Update Recipe
-          </button>
-        </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Ingredients
+            </label>
+            <textarea
+              {...register("recipeIngredients", {
+                required: "Ingredients are required",
+              })}
+              rows="3"
+              className={`w-full p-3 rounded-xl border ${
+                errors.recipeIngredients ? "border-red-400" : "border-gray-300"
+              } focus:border-green-500 outline-none shadow-sm resize-none`}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Chef Name</label>
+            <input
+              {...register("chiefName", {
+                required: "Chef name is required",
+              })}
+              type="text"
+              className={`w-full p-3 rounded-xl border ${
+                errors.chiefName ? "border-red-400" : "border-gray-300"
+              } focus:border-green-500 outline-none shadow-sm`}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Description
+            </label>
+            <textarea
+              {...register("recipeDesc", {
+                required: "Description is required",
+              })}
+              rows="4"
+              className={`w-full p-3 rounded-xl border ${
+                errors.recipeDesc ? "border-red-400" : "border-gray-300"
+              } focus:border-green-500 outline-none shadow-sm resize-none`}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Categories</label>
+            <input
+              {...register("categories")}
+              type="text"
+              className="w-full p-3 rounded-xl border border-gray-300 focus:border-green-500 outline-none shadow-sm"
+            />
+          </div>
+
+          <div className="flex justify-between items-center mt-6">
+            <button
+              type="submit"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 text-white font-medium shadow-lg transition"
+            >
+              Update Recipe
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 text-white font-medium shadow-lg transition"
+            >
+              Delete Recipe
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
