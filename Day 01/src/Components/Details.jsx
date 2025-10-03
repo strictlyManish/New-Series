@@ -26,6 +26,7 @@ function Details() {
     const copudata = [...data];
     copudata[idx] = { ...copudata, ...newdata };
     setData(copudata);
+      localStorage.setItem('data',JSON.stringify(copudata))
     toast.success("Successfully updated!");
     navigate("/recipies");
   };
@@ -34,6 +35,7 @@ function Details() {
     const del = data.filter((obj) => obj.id !== id);
     setData(del);
     toast.success("Recipe Deleted");
+    localStorage.setItem('data',JSON.stringify(del))
     navigate("/recipies");
   };
 
