@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { RecipiesContext } from "./../Context/Recipe";
-import { useForm } from "react-hook-form";
-import {toast} from 'react-hot-toast'
+import { get, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 function Details() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function Details() {
     const copudata = [...data];
     copudata[idx] = { ...copudata, ...newdata };
     setData(copudata);
-    toast.success('Successfully updated!');
+    toast.success("Successfully updated!");
     navigate("/recipies");
   };
 
@@ -37,15 +37,31 @@ function Details() {
     navigate("/recipies");
   };
 
+  const addtolike = () => {
+    let liked = JSON.parse(localStorage.getItem("liked")) || [];
+    if (!liked.find((item) => item.id === recipe.id)) {
+      localStorage.setItem("liked", JSON.stringify([...liked, recipe]));
+      toast.success("Added to favorites");
+    } else {
+      toast.error("Already in favorites");
+    }
+  };
+
   return (
     <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 p-8 ">
-      <div className="flex-1 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+      <div className="flex-1 rounded-2xl shadow-lg p-6 flex flex-col gap-5 ">
         <img
           src={recipe.url}
           alt={recipe.recipeName}
           className="w-full max-w-md rounded-xl shadow-md object-cover"
         />
         <h2 className="text-3xl font-bold mt-4">{recipe.recipeName}</h2>
+        <button
+          onClick={addtolike}
+          className="w-fit bg-white px-2 py-2 rounded text-black active:bg-blue-400 cursor-pointer"
+        >
+          Like ❤️
+        </button>
       </div>
 
       <div className="flex-1 rounded-2xl shadow-xl p-8 backdrop-blur-lg">

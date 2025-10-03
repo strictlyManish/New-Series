@@ -29,7 +29,7 @@ function Recipe(prpops) {
     {
       id: "gr_curry_03",
       recipeName: "Thai Green Curry",
-      url: "https://images.pexels.com/photos/6061920/pexels-photo-6061920.jpeg?auto=compress&cs=tinysrgb&w=600",
+      url: "https://images.unsplash.com/photo-1668665772043-bdd32e348998?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8VGhhaSUyMEdyZWVuJTIwQ3Vycnl8ZW58MHx8MHx8fDA%3D",
       recipeDesc:
         "A vibrant and aromatic curry made with green chili paste, coconut milk, chicken, and vegetables.",
       recipeIngredients:
@@ -51,7 +51,7 @@ function Recipe(prpops) {
     {
       id: "sushi_05",
       recipeName: "California Sushi Roll",
-      url: "https://images.pexels.com/photos/7259303/pexels-photo-7259303.jpeg?auto=compress&cs=tinysrgb&w=600",
+      url: "https://plus.unsplash.com/premium_photo-1691091725111-fb10cdb2cc76?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Q2FsaWZvcm5pYSUyMFN1c2hpJTIwUm9sbHxlbnwwfHwwfHx8MA%3D%3D",
       recipeDesc:
         "A popular inside-out sushi roll with imitation crab, avocado, and cucumber, often rolled in toasted sesame seeds.",
       recipeIngredients:
@@ -95,7 +95,7 @@ function Recipe(prpops) {
     {
       id: "paella_09",
       recipeName: "Seafood Paella",
-      url: "https://images.pexels.com/photos/10738010/pexels-photo-10738010.jpeg?auto=compress&cs=tinysrgb&w=600",
+      url: "https://images.unsplash.com/photo-1623961990059-28356e226a77?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2VhZm9vZCUyMFBhZWxsYXxlbnwwfHwwfHx8MA%3D%3D",
       recipeDesc:
         "A traditional Spanish rice dish from Valencia, cooked with saffron, shrimp, mussels, and other seafood in a large shallow pan.",
       recipeIngredients:
