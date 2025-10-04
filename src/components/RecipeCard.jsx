@@ -11,9 +11,9 @@ function RecipeCard({ value }) {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="mt-3 text-white">
+        <div className="mt-4 flex flex-col ga-5 text-white">
           <h1 className="text-lg font-bold">{value.name}</h1>
-          <p className="text-sm text-gray-300">{value.description}</p>
+          <p className="text-sm text-gray-300">{value.description.slice(0,88)} <span className="text-blue-400">..more</span> </p>
           <p className="mt-1 text-xs text-white bg-pink-800 w-fit px-5 py-2 rounded-full backdrop-blur-md">
             👨‍🍳 {value.chef}
           </p>

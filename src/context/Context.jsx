@@ -22,6 +22,9 @@ function Context({ children }) {
     },
   ]);
 
+
+  const getdata = localStorage.getItem('data')
+
   return (
     <RecipiesContex.Provider value={[data, setData]}>
       {children}

@@ -6,7 +6,7 @@ function Recipes() {
   const [data] = useContext(RecipiesContex);
 
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-5 h-screen">
       {data.map((obj) => (
         <RecipeCard key={obj.id} value={obj} />
       ))}
