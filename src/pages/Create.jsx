@@ -13,16 +13,17 @@ function Create() {
     watch, // Kept to watch for the image URL for the preview
     reset,
   } = useForm();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setdata] = useContext(RecipiesContex);
 
   const onSubmit = (newdata) => {
-    newdata.id = nanoid(4)
+    newdata.id = nanoid(4);
     const copydata = [...data];
     copydata.push(newdata);
     setdata(copydata);
-    toast.success('Recipe created sucessfully')
-    navigate('/recipes')
+    localStorage.setItem("data", JSON.stringify(copydata));
+    toast.success("Recipe created sucessfully");
+    navigate("/recipes");
     reset();
   };
 
@@ -57,7 +58,6 @@ function Create() {
               className="w-full text-white bg-gray-700 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-orange-500 transition duration-150"
               {...register("url", {
                 required: "Image URL is required",
-                
               })}
             />
             {errors.url && (

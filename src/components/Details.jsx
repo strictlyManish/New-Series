@@ -17,29 +17,33 @@ function Details() {
   } = useForm({ defaultValues: recipe });
 
   const onSubmit = (newdata) => {
-    const idx = data.findIndex((obj)=> id == obj.id);
+    const idx = data.findIndex((obj) => id == obj.id);
     const copydata = [...data];
-    copydata[idx] = {...copydata[idx],...newdata};
+    copydata[idx] = { ...copydata[idx], ...newdata };
+    localStorage.setItem("data", JSON.stringify(copydata));
     setData(copydata);
-    toast.success('Recipe updated')
-  };
-  
-
-  const delhandler = () =>{
-      const filtred = data.filter((obj)=> id !== obj.id);
-      setData(filtred)
-      navigate('/recipes')
-      toast.success('recipes Deleted')
+    toast.success("Recipe updated");
   };
 
+  const delhandler = () => {
+    const filtred = data.filter((obj) => id !== obj.id);
+    setData(filtred);
+    localStorage.setItem("data", JSON.stringify(filtred));
+    navigate("/recipes");
+    toast.success("recipes Deleted");
+  };
 
   // --- Data Not Found View ---
   if (!recipe) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
         <div className="p-8 bg-gray-800 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-bold text-red-500">Recipe Not Found 😔</h2>
-          <p className="mt-2 text-gray-400">Please check the recipe ID and try again.</p>
+          <h2 className="text-3xl font-bold text-red-500">
+            Recipe Not Found 😔
+          </h2>
+          <p className="mt-2 text-gray-400">
+            Please check the recipe ID and try again.
+          </p>
         </div>
       </div>
     );
@@ -49,23 +53,31 @@ function Details() {
   return (
     <div className="min-h-screen text-white p-4 sm:p-8">
       <div className="max-w-4xl mx-auto">
-          <button onClick={()=>navigate('/recipes ')} className=" rounded-full px-3 p-2 font-medium bg-gray-700">Back to recipies</button>
+        <button
+          onClick={() => navigate("/recipes ")}
+          className=" rounded-full px-3 p-2 font-medium bg-gray-700"
+        >
+          Back to recipies
+        </button>
         {/* Recipe Header (Details View) */}
         <header className="mb-8 p-6 bg-gray-800 rounded-xl shadow-2xl transition duration-300 hover:shadow-orange-900/50">
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-shrink-0 w-full md:w-1/3">
               {/* Image with object-cover for better fit and a subtle border */}
-              
-              <img 
-                src={recipe.url} 
-                alt={recipe.name} 
-                className="w-full h-48 object-cover rounded-lg border-2 border-orange-500 shadow-md transition duration-300" 
+
+              <img
+                src={recipe.url}
+                alt={recipe.name}
+                className="w-full h-48 object-cover rounded-lg border-2 border-orange-500 shadow-md transition duration-300"
               />
             </div>
             <div className="flex-grow">
-              <h1 className="text-4xl font-extrabold text-orange-400 mb-2">{recipe.name}</h1>
+              <h1 className="text-4xl font-extrabold text-orange-400 mb-2">
+                {recipe.name}
+              </h1>
               <p className="text-xl text-gray-300 mb-4">
-                <span className="font-semibold text-orange-500">Chef:</span> {recipe.chef}
+                <span className="font-semibold text-orange-500">Chef:</span>{" "}
+                {recipe.chef}
               </p>
               <p className="text-gray-400 italic">
                 {recipe.description || "No detailed description provided."}
@@ -73,9 +85,16 @@ function Details() {
               {/* Optional: Display ingredients brief */}
               {recipe.ingredients && (
                 <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-orange-400">Key Ingredients:</h3>
+                  <h3 className="text-lg font-semibold text-orange-400">
+                    Key Ingredients:
+                  </h3>
                   <p className="text-sm text-gray-400">
-                    {recipe.ingredients.split(',').map(i => i.trim()).slice(0, 3).join(', ')}{"..."}
+                    {recipe.ingredients
+                      .split(",")
+                      .map((i) => i.trim())
+                      .slice(0, 3)
+                      .join(", ")}
+                    {"..."}
                   </p>
                 </div>
               )}
@@ -88,9 +107,11 @@ function Details() {
           <h2 className="text-3xl font-bold text-white mb-6 border-b border-gray-700 pb-3">
             Edit Recipe Details
           </h2>
-          
-          <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
             {/* Recipe Name */}
             <InputField
               label="Recipe Name"
@@ -123,13 +144,16 @@ function Details() {
               errors={errors}
               type="text"
             />
-            
+
             {/* Placeholder to align the grid better */}
-            <div className="hidden md:block"></div> 
+            <div className="hidden md:block"></div>
 
             {/* Description (Full width) */}
             <div className="md:col-span-2">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
                 Description
               </label>
               <textarea
@@ -146,13 +170,18 @@ function Details() {
                 })}
               />
               {errors.description && (
-                <p className="text-red-400 text-sm mt-1">{errors.description.message}</p>
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.description.message}
+                </p>
               )}
             </div>
 
             {/* Ingredients (Full width) */}
             <div className="md:col-span-2">
-              <label htmlFor="ingredients" className="block text-sm font-medium text-gray-300 mb-1">
+              <label
+                htmlFor="ingredients"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
                 Ingredients
               </label>
               <textarea
@@ -165,7 +194,9 @@ function Details() {
                 })}
               />
               {errors.ingredients && (
-                <p className="text-red-400 text-sm mt-1">{errors.ingredients.message}</p>
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.ingredients.message}
+                </p>
               )}
             </div>
 
@@ -176,7 +207,7 @@ function Details() {
                 type="button"
                 className="bg-red-500 px-6 py-3 text-white rounded-full "
               >
-               Delete Recipe
+                Delete Recipe
               </button>
               <button
                 type="submit"
@@ -193,9 +224,20 @@ function Details() {
 }
 
 // Helper component for cleaner form structure
-const InputField = ({ label, register, name, placeholder, requiredMessage, errors, type = "text" }) => (
+const InputField = ({
+  label,
+  register,
+  name,
+  placeholder,
+  requiredMessage,
+  errors,
+  type = "text",
+}) => (
   <div>
-    <label htmlFor={name} className="block text-sm font-medium text-gray-300 mb-1">
+    <label
+      htmlFor={name}
+      className="block text-sm font-medium text-gray-300 mb-1"
+    >
       {label}
     </label>
     <input
