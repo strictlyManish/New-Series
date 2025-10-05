@@ -10,7 +10,7 @@ function Create() {
     register,
     handleSubmit,
     formState: { errors },
-    watch, // Kept to watch for the image URL for the preview
+    watch, 
     reset,
   } = useForm();
   const navigate = useNavigate();

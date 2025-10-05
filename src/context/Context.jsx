@@ -6,7 +6,7 @@ function Context({ children }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setData(JSON.parse(localStorage.getItem("data")));
+    setData(JSON.parse(localStorage.getItem("data")) || []);
   }, []);
 
   return (
