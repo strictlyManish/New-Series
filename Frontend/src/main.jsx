@@ -3,12 +3,12 @@ import App from "./App.jsx";
 import { Toaster } from "react-hot-toast";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import Store from "./store/Store.jsx";
 import { Provider } from "react-redux";
+import Store from "./store/Store.jsx";
 
 createRoot(document.getElementById("root")).render(
   <>
-    <Provider stre={Store}>
+    <Provider store={Store}>
       <BrowserRouter>
         <App />
         <Toaster />

@@ -1,22 +1,21 @@
-import React from "react";
-import axios from './api/axiosconfig';
+import React, { useEffect } from "react";
+import { getasyncgetusers } from "./store/userAction";
+import { useDispatch, useSelector } from "react-redux";
 function App() {
 
+  const diapatch = useDispatch();
+  const data = useSelector((state)=>state.user)
 
-  const getproduct = async () =>{
-    try {
-      const {data} = await axios.get('products');
+  console.log(data)
 
-      console.log(data)
 
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  useEffect(()=>{
+    diapatch(getasyncgetusers())
+  },[])
 
   return (
     <div className="bg-gray-700 h-screen w-screen font-thin text-white px-5 py-5">
-      <button onClick={getproduct} >Fetch</button>
+      <button>Automatically Fetching</button>
     </div>
   );
 }
