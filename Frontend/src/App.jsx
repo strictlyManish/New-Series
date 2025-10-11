@@ -1,21 +1,12 @@
-import React, { useEffect } from "react";
-import { getasyncgetusers } from "./store/userAction";
-import { useDispatch, useSelector } from "react-redux";
+import Navigation from "./components/Navigation";
+import Mainroutes from "./routes/Mainroutes";
+
+
 function App() {
-
-  const diapatch = useDispatch();
-  const data = useSelector((state)=>state.user)
-
-  console.log(data)
-
-
-  useEffect(()=>{
-    diapatch(getasyncgetusers())
-  },[])
-
   return (
-    <div className="bg-gray-700 h-screen w-screen font-thin text-white px-5 py-5">
-      <button>Automatically Fetching</button>
+    <div className="bg-gray-800 h-screen w-screen font-md text-white px-20 py-5">
+      <Navigation />
+      <Mainroutes />
     </div>
   );
 }
