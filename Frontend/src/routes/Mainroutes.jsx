@@ -3,7 +3,8 @@ import Products from "./../pages/Products";
 import Cart from "../pages/Cart";
 import PageNotFound from "./../PageNotFound";
 import { Route, Routes } from "react-router-dom";
-import Login from './../pages/Login';
+import Login from "./../pages/Login";
+import Register from "./../pages/Register";
 
 function Mainroutes() {
   return (
@@ -12,6 +13,7 @@ function Mainroutes() {
       <Route path="/products" element={<Products />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/register" element={<Register />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
