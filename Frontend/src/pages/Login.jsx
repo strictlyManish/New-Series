@@ -1,42 +1,75 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 
+  const onSubmit = (data) => {
+    console.log(data);
+    toast.success('user logged sucessfully')
+  };
+
   return (
-    <div className="mt-10">
-      <h2 className="text-2xl text-gray-400">Login or register here</h2>
-      <form className="mt-5 w-1/6">
-        <input
-          {...register("username", { required: "username is required" })}
-          type="text"
-          placeholder="enter usernsme"
-          className="border-2 outline-0 border-gray-300 p-2 rounded-lg w-full mb-4"
-        />
-        <input
-          {...register("email", { required: "Email is required" })}
-          type="email"
-          placeholder="enter email here.."
-          className="border-2 outline-0 border-gray-300 p-2 rounded-lg w-full mb-4"
-        />
-        <input
-          {...register("password", { required: "password is required" })}
-          type="password"
-          placeholder="enter password here.."
-          className="border-2 outline-0 border-gray-300 p-2 rounded-lg w-full mb-4"
-        />
-        <button className="bg-g" type="submit">Login</button>
-        <div>
-          <p>Don't have an account ? <Link to='/register'>Register</Link> </p>
-        </div>
-      </form>
+    <div className="min-h-screen flex items-center justify-center  px-4">
+      <div className="bg-gray-800 text-white rounded-2xl  w-full max-w-md p-8">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Welcome Back 👋
+        </h2>
+        <p className="text-gray-400 text-center mb-8">Login to your account</p>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div>
+            <input
+              {...register("email", { required: "Email is required" })}
+              type="email"
+              placeholder="Email address"
+              className="w-full p-3 bg-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none placeholder-gray-400"
+            />
+            {errors.email && (
+              <p className="text-pink-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <input
+              {...register("password", { required: "Password is required" })}
+              type="password"
+              placeholder="Password"
+              className="w-full p-3 bg-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none placeholder-gray-400"
+            />
+            {errors.password && (
+              <p className="text-pink-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-pink-600 hover:bg-pink-700 transition rounded-lg font-semibold shadow-md"
+          >
+            Login
+          </button>
+
+          <div className="text-center mt-4 text-gray-400">
+            Don’t have an account?{" "}
+            <Link
+              to="/register"
+              className="text-pink-500 hover:text-pink-400 font-semibold"
+            >
+              Register
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

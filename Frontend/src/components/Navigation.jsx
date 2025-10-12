@@ -5,7 +5,6 @@ function Navigation() {
   const data = [
     { name: "Home", link: "/" },
     { name: "Products", link: "/products" },
-    { name: "Cart", link: "/cart" },
     { name: "Login", link: "/login" },
   ];
 
