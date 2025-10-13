@@ -1,9 +1,7 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { asyncRegisteruser } from "../store/actions/userAction";
+import { asyncRegisterUser } from "../store/actions/userAction";
 import { useDispatch } from "react-redux";
-import { nanoid } from "nanoid";
 
 function Register() {
   const {
@@ -16,9 +14,8 @@ function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onSubmit = (data) => {
-    data.id = nanoid();
     data.isAdmin = false;
-    dispatch(asyncRegisteruser(data))
+    dispatch(asyncRegisterUser(data))
     navigate("/login");
   };
 

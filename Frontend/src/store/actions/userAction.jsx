@@ -1,11 +1,14 @@
-import { toast } from 'react-hot-toast';
 import axios from '../../api/axiosconfig';
+import { toast } from 'react-hot-toast';
 
-export const asyncRegisteruser = (user) => async (dispatch, getState) => {
-    try {
-        const res = await axios.post('/users', user);
-        toast.success("user registered");
-    } catch (error) {
-        toast.error("user not registered");
-    }
-}
+export const asyncRegisterUser = (user) => async (dispatch) => {
+  try {
+    const res = await axios.post('/register', user, {
+      withCredentials: true,
+    });
+    toast.success("User registered successfully");
+    return res.data; // Return data if needed
+  } catch (error) {
+    toast.error(error.response?.data?.message || "User not registered"); 
+  }
+};
