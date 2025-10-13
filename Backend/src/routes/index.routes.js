@@ -4,7 +4,6 @@ const {RegisterController,LoginController} = require('../controllers/auth.contro
 
 
 
-
 routes.post('/register',RegisterController)
 routes.post('/login',LoginController)
 

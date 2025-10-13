@@ -12,3 +12,16 @@ export const asyncRegisterUser = (user) => async (dispatch) => {
     toast.error(error.response?.data?.message || "User not registered"); 
   }
 };
+
+
+export const asyncLoginUser = (user) => async (dispatch) => {
+  try {
+    const res = await axios.post('/login', user, {
+      withCredentials: true,
+    });
+    console.log(res)
+    toast.success(res.data.message || "User logged in successfully");
+  } catch (error) {
+    toast.error(error.response?.data?.message || "User not registered"); 
+  }
+};

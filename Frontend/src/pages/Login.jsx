@@ -1,7 +1,7 @@
-import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { asyncLoginUser } from "../store/actions/userAction";
 
 function Login() {
   const {
@@ -10,9 +10,12 @@ function Login() {
     formState: { errors },
   } = useForm();
 
+  const dispapatch = useDispatch();
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
-    console.log(data);
-    toast.success('user logged sucessfully')
+    dispapatch(asyncLoginUser(data));
+    navigate("/")
   };
 
   return (
@@ -26,8 +29,8 @@ function Login() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <input
-              {...register("email", { required: "Email is required" })}
-              type="email"
+              {...register("username", { required: "username is required" })}
+              type="text"
               placeholder="Email address"
               className="w-full p-3 bg-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none placeholder-gray-400"
             />

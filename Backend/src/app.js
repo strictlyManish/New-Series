@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cookie_parser = require('cookie-parser');
 const routes = require('./routes/index.routes');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use(cors({
 
 
 app.use('/api', routes);
+app.use('/api',userRoutes)
 
 module.exports = app;
