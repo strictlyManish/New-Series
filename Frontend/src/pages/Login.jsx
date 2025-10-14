@@ -1,80 +1,52 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { asyncLoginUser } from "../store/actions/userAction";
+import { Link } from "react-router-dom";
 
-function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const dispapatch = useDispatch();
-  const navigate = useNavigate();
+export default function Login() {
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    dispapatch(asyncLoginUser(data));
-    navigate("/")
+    console.log("Login Data:", data);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  px-4">
-      <div className="bg-gray-800 text-white rounded-2xl  w-full max-w-md p-8">
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Welcome Back 👋
-        </h2>
-        <p className="text-gray-400 text-center mb-8">Login to your account</p>
+    <div className="min-h-screen flex items-center justify-center  text-white px-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-zinc-900 shadow-lg rounded-2xl p-8 w-full max-w-sm sm:max-w-md"
+      >
+        <h2 className="text-3xl font-semibold text-center mb-6">Login</h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div>
-            <input
-              {...register("username", { required: "username is required" })}
-              type="text"
-              placeholder="Email address"
-              className="w-full p-3 bg-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none placeholder-gray-400"
-            />
-            {errors.email && (
-              <p className="text-pink-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+        <input
+          type="text"
+          placeholder="Username"
+          {...register("username", { required: true })}
+          className="w-full mb-4 p-3 bg-transparent border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+        />
 
-          <div>
-            <input
-              {...register("password", { required: "Password is required" })}
-              type="password"
-              placeholder="Password"
-              className="w-full p-3 bg-gray-700 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none placeholder-gray-400"
-            />
-            {errors.password && (
-              <p className="text-pink-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+        <input
+          type="password"
+          placeholder="Password"
+          {...register("password", { required: true })}
+          className="w-full mb-6 p-3 bg-transparent border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+        />
 
-          <button
-            type="submit"
-            className="w-full py-3 bg-pink-600 hover:bg-pink-700 transition rounded-lg font-semibold shadow-md"
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors"
+        >
+          Login
+        </button>
+
+        <p className="text-center text-sm text-gray-400 mt-4">
+          Don’t have an account?{" "}
+          <Link
+            to="/register"
+            className="text-blue-400 hover:underline font-medium"
           >
-            Login
-          </button>
-
-          <div className="text-center mt-4 text-gray-400">
-            Don’t have an account?{" "}
-            <Link
-              to="/register"
-              className="text-pink-500 hover:text-pink-400 font-semibold"
-            >
-              Register
-            </Link>
-          </div>
-        </form>
-      </div>
+            Register
+          </Link>
+        </p>
+      </form>
     </div>
   );
 }
-
-export default Login;

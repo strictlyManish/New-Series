@@ -1,14 +1,13 @@
-import Navigation from "./components/Navigation";
-import Mainroutes from "./routes/Mainroutes";
-
+import Navigation from './components/naviagation'
+import Mainroutes from './routes/Mainroutes';
 
 function App() {
   return (
-    <div className="bg-gray-800 h-screen w-screen font-md text-white px-20 py-5">
+    <div className='bg-gray-800 text-white font-serif h-screen w-screen px-5 py-10'>
       <Navigation />
       <Mainroutes />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
