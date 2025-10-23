@@ -1,23 +1,25 @@
-import { useEffect } from 'react';
-import Navigation from './components/naviagation'
-import Mainroutes from './routes/Mainroutes';
-import { useDispatch } from 'react-redux';
-import { asynccurrentuser } from './store/action/userAction';
+import axios from "./utils/axios.config";
 
-function App() {
 
-  const dispatch = useDispatch()
+export default function App() {
 
-  useEffect(() => {
-    dispatch(asynccurrentuser())
-  },[])
+  const getproduct = async () => {
+    try {
+      const {data} = await axios.get("/products");
+      console.log(data)
+      
+    } catch (error) {
+      
+    }
+  };
+
+
+
 
   return (
-    <div className='bg-gray-800 text-white font-serif h-screen w-screen px-5 py-5'>
-      <Navigation />
-      <Mainroutes />
+    <div className='bg-gray-800 h-screen px-5 py-5 text-white w-screen'>
+      <button onClick={getproduct} className="bg-gray-500 p-2 rounded-full active:scale-95" >Products page</button>
     </div>
   )
 }
 
-export default App
