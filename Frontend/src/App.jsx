@@ -1,25 +1,21 @@
-import axios from "./utils/axios.config";
+import React, { useEffect } from 'react'
+import {useDispatch} from "react-redux";
+import {asyncgetuser} from './app/userAction';
 
+function App() {
 
-export default function App() {
+    const dispatch = useDispatch()
 
-  const getproduct = async () => {
-    try {
-      const {data} = await axios.get("/products");
-      console.log(data)
-      
-    } catch (error) {
-      
-    }
-  };
-
-
+    useEffect(()=>{
+      dispatch(asyncgetuser())
+    })
 
 
   return (
-    <div className='bg-gray-800 h-screen px-5 py-5 text-white w-screen'>
-      <button onClick={getproduct} className="bg-gray-500 p-2 rounded-full active:scale-95" >Products page</button>
+    <div className='h-screen bg-gray-800 text-white px-10 py-5'>
+      <button>Get User</button>
     </div>
   )
 }
 
+export default App
