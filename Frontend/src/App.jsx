@@ -1,19 +1,11 @@
-import React, { useEffect } from 'react'
-import {useDispatch} from "react-redux";
-import {asyncgetuser} from './app/userAction';
+import Navbar from './components/Navbar';
+import Mainroutes from './routes/Mainroutes';
 
 function App() {
-
-    const dispatch = useDispatch()
-
-    useEffect(()=>{
-      dispatch(asyncgetuser())
-    })
-
-
   return (
-    <div className='h-screen bg-gray-800 text-white px-10 py-5'>
-      <button>Get User</button>
+    <div className='h-screen bg-gray-800 text-white font-thin px-10 py-5 text-[20px]'>
+      <Navbar/>
+      <Mainroutes/>
     </div>
   )
 }
