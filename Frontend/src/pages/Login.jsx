@@ -14,7 +14,8 @@ export default function Login() {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    dispatch(asyncLoginUser(data));
+  dispatch(asyncLoginUser(data));
+  console.log(l)
     navigate('/products')
   };
 
@@ -31,6 +32,7 @@ export default function Login() {
               Email
             </label>
             <input
+              autoComplete="on"
               type="email"
               {...register("email", { required: "Email is required" })}
               placeholder="you@example.com"
@@ -46,6 +48,7 @@ export default function Login() {
               Password
             </label>
             <input
+              autoComplete="on"
               type="password"
               {...register("password", { required: "Password is required" })}
               placeholder="••••••••"

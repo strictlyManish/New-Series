@@ -1,4 +1,4 @@
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import axios from "../../utils/axios.config";
 import { loaduser } from '../reducers/userSlice';
 
@@ -11,7 +11,7 @@ export const asyncRegisterUser = (user) => async (dispatchEvent, getState) => {
     }
 };
 
-export const asyncLoginUser = (user) => async (dispatchEvent, getState) => {
+export const asyncLoginUser = async (user) => {
     try {
         const { data } = await axios.get(`/users?${user.email}&password=${user.password}`);
 
@@ -21,10 +21,9 @@ export const asyncLoginUser = (user) => async (dispatchEvent, getState) => {
         }
 
     } catch (error) {
-        toast.error('Error durin logged in')
+        toast.error('Error during logged in')
     }
 };
-
 
 export const asyncLogOutUser = () => {
     try {
@@ -34,14 +33,13 @@ export const asyncLogOutUser = () => {
     }
 };
 
-
 export const asyncGetCurrentUser = () => async (dispatchEvent, getState) => {
     try {
         const user = JSON.parse((localStorage.getItem('user')))
         if (user) {
             dispatchEvent(loaduser(user))
         } else {
-            console.log('user not found')
+            toast.success('user Logged out!')
         }
     } catch (error) {
         toast.error('Error durin logged in')
