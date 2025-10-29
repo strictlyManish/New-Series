@@ -1,47 +1,62 @@
 import toast from 'react-hot-toast';
 import axios from "../../utils/axios.config";
-import { loaduser } from '../reducers/userSlice';
+import { loaduser, logoutuser } from '../reducers/userSlice';
 
-export const asyncRegisterUser = (user) => async (dispatchEvent, getState) => {
+// REGISTER
+export const asyncRegisterUser = (user) => {
+  return async (dispatch) => {
     try {
-        const response = await axios.post('/users', user);
-        toast.success('Registrion scucessfull')
+      await axios.post('/users', user);
+      toast.success('Registration successful');
     } catch (error) {
-        toast.error('Error during registrations')
+      toast.error('Error during registration');
     }
+  };
 };
 
-export const asyncLoginUser = async (user) => {
+// LOGIN
+export const asyncLoginUser = (user) => {
+  return async (dispatch) => {
     try {
-        const { data } = await axios.get(`/users?${user.email}&password=${user.password}`);
+      const { data } = await axios.get(`/users?email=${user.email}&password=${user.password}`);
 
-        if (data.length > 0) {
-            localStorage.setItem('user', JSON.stringify(data))
-            toast.success('user Logged In')
-        }
+      if (data.length > 0) {
+        localStorage.setItem('user', JSON.stringify(data[0]));
+        dispatch(loaduser(data[0]));
+        toast.success('User Logged In');
+      } else {
+        toast.error('Invalid Credentials');
+      }
 
     } catch (error) {
-        toast.error('Error during logged in')
+      toast.error('Error during login');
     }
+  };
 };
 
+// LOGOUT
 export const asyncLogOutUser = () => {
+  return (dispatch) => {
     try {
-        localStorage.setItem('user', '')
+      localStorage.removeItem('user');
+      dispatch(logoutuser());
+      toast.success('Logged Out');
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
+  };
 };
 
-export const asyncGetCurrentUser = () => async (dispatchEvent, getState) => {
+// LOAD CURRENT USER
+export const asyncGetCurrentUser = () => {
+  return (dispatch) => {
     try {
-        const user = JSON.parse((localStorage.getItem('user')))
-        if (user) {
-            dispatchEvent(loaduser(user))
-        } else {
-            toast.success('user Logged out!')
-        }
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        dispatch(loaduser(user));
+      } 
     } catch (error) {
-        toast.error('Error durin logged in')
+      toast.error('Login again or refresh page');
     }
+  };
 };

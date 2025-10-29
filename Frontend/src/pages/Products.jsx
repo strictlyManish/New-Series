@@ -19,7 +19,7 @@ function Products() {
           <div className='flex justify-center'>
             <img src={obj.image} alt={obj.title} className='h-30 object-contain' />
           </div>
-          <h1 className='font-medium text-[15px] mt-3'>{obj.title}</h1>
+          <h1 className='font-medium text-[15px] mt-3 line-clamp-2'>{obj.title}</h1>
           <span className='text-2xl' >${obj.price}</span>
           <p className='bg-gray-800 rounded-full text-[12px] w-fit px-3 py-1'>{obj.category}</p>
           <p className='text-sm text-gray-100 mt-2 line-clamp-3'>{obj.description}</p>

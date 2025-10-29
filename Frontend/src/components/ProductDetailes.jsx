@@ -1,146 +1,116 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { asyncUpdateProduct, asyncDeleteProduct } from "../app/actions/productAction";
 
-export default function CreateProduct() {
+export default function ProductDetails() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-    const products = useSelector((state) => state.productReducer.products);
-    const { id } = useParams();
-    const filteredata = products.find((obj) => obj.id == id);
+  const user = useSelector((state) => state.useReducer.user); // ✅ Correct user
+  const products = useSelector((state) => state.productReducer.products);
 
+  const product = products.find((p) => p.id == id);
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-        reset,
-    } = useForm({ defaultValues: filteredata });
+  const { register, handleSubmit } = useForm({
+    defaultValues: product,
+  });
 
-    const dispatch = useDispatch();
+  const handleUpdate = (updatedProduct) => {
+    dispatch(asyncUpdateProduct(product.id, updatedProduct));
+  };
 
-    const navigate = useNavigate();
+  const handleDelete = () => {
+    dispatch(asyncDeleteProduct(id));
+    navigate("/products");
+  };
 
-    const onSubmit = (product) => {
-        +
+  return (
+    <div className="max-w-6xl mx-auto py-10 px-4 text-white">
 
-            navigate("/procucts");
-        reset();
-    };
+      {/* Product Display Card */}
+      <div className="grid md:grid-cols-2 gap-8 bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700">
+        
+        <img
+          src={product?.image}
+          alt={product?.title}
+          className="object-contain w-full h-[350px] rounded-lg bg-gray-900 p-3"
+        />
 
-    const imageURL = watch("image");
+        <div className="flex flex-col justify-center">
+          <h1 className="text-3xl font-bold mb-3">{product?.title}</h1>
+          <p className="text-gray-300 mb-4">{product?.description}</p>
+          <p className="text-4xl font-semibold text-green-400 mb-6">₹{product?.price}</p>
 
-    return (
-        <div className="h-screen md:flex-row gap-8 mt-5 px-5 py-10">
-
-            <div className="flex">
-                {/* Form */}
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col gap-4 w-full md:w-1/2 rounded-xl uppercase"
-                >
-                    <h2 className="text-2xl font-bold text-gray-100 mb-5">Update Product</h2>
-
-                    {/* Title */}
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="product title"
-                            className="w-full bg-gray-600 text-[15px] uppercase p-4 rounded outline-none"
-                            {...register("title", { required: "Title is required" })}
-                        />
-                        {errors.title && (
-                            <p className="text-red-500 text-sm">{errors.title.message}</p>
-                        )}
-                    </div>
-
-                    {/* Price & Category */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="w-full">
-                            <input
-                                placeholder="product amount"
-                                type="number"
-                                step="0.01"
-                                className="w-full bg-gray-600 text-[15px] uppercase p-4 rounded outline-none"
-                                {...register("price", {
-                                    required: "Price is required",
-                                    min: { value: 1, message: "Price must be at least 1" },
-                                })}
-                            />
-                            {errors.price && (
-                                <p className="text-red-500 text-sm">{errors.price.message}</p>
-                            )}
-                        </div>
-
-                        <div className="w-full">
-                            <input
-                                placeholder="product category"
-                                type="text"
-                                className="w-full bg-gray-600 text-[15px] uppercase p-4 rounded outline-none"
-                                {...register("category", { required: "Category is required" })}
-                            />
-                            {errors.category && (
-                                <p className="text-red-500 text-sm">{errors.category.message}</p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Description */}
-                    <div>
-                        <textarea
-                            placeholder="Enter product description"
-                            className="w-full bg-gray-600 text-[15px] uppercase p-4 rounded outline-none h-28 resize-none"
-                            {...register("description", { required: "Description is required" })}
-                        ></textarea>
-                        {errors.description && (
-                            <p className="text-red-500 text-sm">
-                                {errors.description.message}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Image URL */}
-                    <div>
-                        <input
-                            placeholder="Paste image url"
-                            type="text"
-                            className="w-full bg-gray-600 text-[15px] uppercase p-4 rounded outline-none"
-                            {...register("image", { required: "Image URL is required" })}
-                        />
-                        {errors.image && (
-                            <p className="text-red-500 text-sm">{errors.image.message}</p>
-                        )}
-                    </div>
-
-                    <div className=" flex gap-5">
-                        <button
-                            type="button"
-                            className="w-full bg-pink-600 text-white p-3 rounded-xl hover:bg-blue-700 transition font-semibold"
-                        >
-                            Add to cart
-                        </button>
-                        <button
-                        type="submit"
-                            className="w-full bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 transition font-semibold"
-                        >
-                            Update product
-                        </button>
-                    </div>
-                </form>
-
-                {/* Image Preview */}
-                <div className="w-full md:w-1/2 h-[300px] md:h-[60vh] flex justify-center items-center rounded-xlbackdrop-blur-md overflow-hidden">
-                    {imageURL ? (
-                        <img
-                            src={imageURL}
-                            alt="Preview"
-                            className="object-contain w-full h-full"
-                        />
-                    ) : (
-                        <p className="text-gray-300 text-sm">Image Preview Will Appear Here</p>
-                    )}
-                </div>
-            </div>
+          <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black text-lg font-medium py-3 rounded-lg transition">
+            Add to Cart
+          </button>
         </div>
-    );
+      </div>
+
+      {/* Admin Edit Panel */}
+      {user?.isAdmin && (
+        <div className="mt-10 bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700">
+          <h2 className="text-2xl font-semibold mb-5 text-gray-200">Admin Controls</h2>
+
+          <form onSubmit={handleSubmit(handleUpdate)} className="space-y-4">
+
+            <input
+              {...register("image")}
+              type="url"
+              className="w-full p-3 bg-gray-700 text-white rounded-lg outline-none border border-gray-600 focus:border-blue-500"
+              placeholder="Product Image URL"
+            />
+
+            <input
+              {...register("title")}
+              type="text"
+              className="w-full p-3 bg-gray-700 text-white rounded-lg outline-none border border-gray-600 focus:border-blue-500"
+              placeholder="Product Title"
+            />
+
+            <input
+              {...register("price")}
+              type="number"
+              className="w-full p-3 bg-gray-700 text-white rounded-lg outline-none border border-gray-600 focus:border-blue-500"
+              placeholder="0.00"
+            />
+
+            <input
+              {...register("category")}
+              type="text"
+              className="w-full p-3 bg-gray-700 text-white rounded-lg outline-none border border-gray-600 focus:border-blue-500"
+              placeholder="Product Category"
+            />
+
+            <textarea
+              {...register("description")}
+              className="w-full p-3 bg-gray-700 text-white rounded-lg outline-none border border-gray-600 focus:border-blue-500 h-28 resize-none"
+              placeholder="Product Description"
+            ></textarea>
+
+            <div className="flex gap-4 pt-3">
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-3 rounded-lg"
+              >
+                Update Product
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="w-full bg-red-600 hover:bg-red-700 transition text-white font-semibold py-3 rounded-lg"
+              >
+                Delete Product
+              </button>
+            </div>
+
+          </form>
+        </div>
+      )}
+
+    </div>
+  );
 }
