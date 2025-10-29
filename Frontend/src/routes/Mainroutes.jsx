@@ -4,7 +4,7 @@ import Products from './../pages/Products';
 import Login from './../pages/Login';
 import Register from './../pages/Register';
 import CreateProduct from './../pages/admin/CreateProduct';
-import UpdateProduct from './../pages/admin/UpdateProduct';
+import ProductDetailes from '../components/ProductDetailes';
 
 function Mainroutes() {
   return (
@@ -16,7 +16,7 @@ function Mainroutes() {
 
 
       <Route path='/admin/create-product' element={<CreateProduct />} />
-      <Route path='/admin/update-product/:id' element={<UpdateProduct />} />
+      <Route path='/product/:id' element={<ProductDetailes/>} />
     </Routes>
   )
 }
