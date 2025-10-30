@@ -1,44 +1,29 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
-import { asyncLogOutUser } from '../app/actions/userAction';
+import { NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 function Navbar() {
 
   const user = useSelector((state) => state.useReducer.user);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const logouthandler = () => {
-    dispatch(asyncLogOutUser());
-    navigate("/");
-  };
 
   return (
     <div className='flex justify-center items-center gap-x-5 text-[15px]'>
-      <NavLink to='/'>
-        Home
-      </NavLink>
-      <NavLink to='/products'>
-        Products
-      </NavLink>
 
+
+      <NavLink to='/'>Home</NavLink>
       {user ? (
         <>
-          <NavLink to='/admin/create-product'>
-            Create Product
-          </NavLink>
-          <button onClick={logouthandler}>Logout</button>
+          <NavLink to='/admin/create-product'>Create product</NavLink>
+          <NavLink to='/admin/user-profile'>Profile</NavLink>
 
         </>
       ) : (
         <>
-          <NavLink to='/login'>
-            Login
-          </NavLink>
-
+          <NavLink to='/login'>Login</NavLink>
         </>
       )}
+
+
     </div>
   );
 }

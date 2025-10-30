@@ -54,9 +54,29 @@ export const asyncGetCurrentUser = () => {
       const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
         dispatch(loaduser(user));
-      } 
+      }
     } catch (error) {
       toast.error('Login again or refresh page');
     }
   };
+};
+
+
+export const asyncUpdateuser = (id,user) => async (dispatch, getState) => {
+  try {
+    const {data} = await axios.patch("/users/" + id, user);
+    localStorage.setItem('user', JSON.stringify(data));
+    toast.success('profile update scuessfully')
+  } catch (error) {
+    toast.error('updation faild')
+  }
+};
+export const asyncDeleteUser = (id) => async (dispatch, getState) => {
+  try {
+    await axios.delete(`/users/${id}`);
+    toast.success('user deleted sucessfully');
+    dispatch(asyncLogOutUser())
+  } catch (error) {
+    toast.error('updation faild')
+  }
 };

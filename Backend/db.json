@@ -1,20 +1,5 @@
 {
-  "users": [
-    {
-      "id": "XhmoVkE3sgdzZS1eOPIbW",
-      "username": "manish",
-      "email": "manish@gmail.com",
-      "password": "123456",
-      "isAdmin": true
-    },
-    {
-      "id": "_qxuqMl4v10xDMQh4xn0e",
-      "username": "rajzmanish",
-      "email": "test@gmail.com",
-      "password": "1234",
-      "isAdmin": false
-    }
-  ],
+  "users": [],
   "products": [
     {
       "id": "2",
