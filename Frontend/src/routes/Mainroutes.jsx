@@ -1,4 +1,6 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom';
+import Atuhente from './Atuhente';
+
 import Products from './../pages/Products';
 import Login from './../pages/Login';
 import Register from './../pages/Register';
@@ -6,15 +8,8 @@ import CreateProduct from './../pages/admin/CreateProduct';
 import ProductDetailes from '../components/ProductDetailes';
 import Profile from './../pages/user/Profile';
 import PageNotFound from './../PageNotFound';
-import Atuhente from './Atuhente';
-
-
-
 
 function Mainroutes() {
-
-
-
   return (
     <Routes>
 
@@ -27,12 +22,10 @@ function Mainroutes() {
       <Route path='/admin/user-profile' element={<Atuhente> <Profile /></Atuhente>} />
       <Route path='/product/:id' element={<Atuhente> <ProductDetailes /></Atuhente>} />
 
-
       <Route path='*' element={<PageNotFound />} />
-
 
     </Routes>
   )
 }
 
-export default Mainroutes
+export default Mainroutes;

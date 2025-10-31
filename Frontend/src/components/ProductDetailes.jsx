@@ -2,13 +2,15 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { asyncUpdateProduct, asyncDeleteProduct } from "../app/actions/productAction";
+import { asyncUpdateuser } from "../app/actions/userAction";
+
 
 export default function ProductDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const user = useSelector((state) => state.useReducer.user); // ✅ Correct user
+  const user = useSelector((state) => state.useReducer.user);
   const products = useSelector((state) => state.productReducer.products);
 
   const product = products.find((p) => p.id == id);
@@ -26,12 +28,29 @@ export default function ProductDetails() {
     navigate("/products");
   };
 
+  const addtocartfn = (id) => {
+    const copyuser = { ...user, cart: [...user.cart] };
+    const index = copyuser.cart.findIndex((c) => c.productId == id);
+
+    if (index === -1) {
+      copyuser.cart.push({ productId: id, quantity: 1 });
+    } else {
+      copyuser.cart[index] = {
+        ...copyuser.cart[index],
+        quantity: copyuser.cart[index].quantity + 1
+      };
+    }
+
+    dispatch(asyncUpdateuser(user.id, copyuser));
+  };
+
+
   return (
     <div className="max-w-6xl mx-auto py-10 px-4 text-white">
 
       {/* Product Display Card */}
       <div className="grid md:grid-cols-2 gap-8 bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-700">
-        
+
         <img
           src={product?.image}
           alt={product?.title}
@@ -43,7 +62,7 @@ export default function ProductDetails() {
           <p className="text-gray-300 mb-4">{product?.description}</p>
           <p className="text-4xl font-semibold text-green-400 mb-6">₹{product?.price}</p>
 
-          <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black text-lg font-medium py-3 rounded-lg transition">
+          <button onClick={() => addtocartfn(product.id)} className="w-full bg-yellow-500 hover:bg-yellow-600 text-black text-lg font-medium py-3 rounded-lg transition">
             Add to Cart
           </button>
         </div>

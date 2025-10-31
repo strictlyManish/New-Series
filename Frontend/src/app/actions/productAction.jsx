@@ -27,7 +27,6 @@ export const asyncUpdateProduct = (product) => async (dispatch, getState) => {
     try {
         await axios.patch("/products/" + product.id, product);
         dispatch(asyncloadProducts())
-        toast.success('Product Updated scuessfully    ')
     } catch (error) {
         toast.error('update failed')
     }
@@ -37,7 +36,6 @@ export const asyncDeleteProduct = (id) => async (dispatch, getState) => {
     try {
         await axios.delete('/products/' + id);
         dispatch(asyncloadProducts())
-        toast.success('Product Deleted sucessfully')
     } catch (error) {
         toast.error('Deletion failed')
     }

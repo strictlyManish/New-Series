@@ -17,6 +17,7 @@ export default function Register() {
   const onSubmit = (data) => {
     data.id = nanoid();
     data.isAdmin = false;
+    data.cart = []
     dispatch(asyncRegisterUser(data));
     reset()
     navigate('/login')

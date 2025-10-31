@@ -7,7 +7,6 @@ export const asyncRegisterUser = (user) => {
   return async (dispatch) => {
     try {
       await axios.post('/users', user);
-      toast.success('Registration successful');
     } catch (error) {
       toast.error('Error during registration');
     }
@@ -23,7 +22,6 @@ export const asyncLoginUser = (user) => {
       if (data.length > 0) {
         localStorage.setItem('user', JSON.stringify(data[0]));
         dispatch(loaduser(data[0]));
-        toast.success('User Logged In');
       } else {
         toast.error('Invalid Credentials');
       }
@@ -40,7 +38,6 @@ export const asyncLogOutUser = () => {
     try {
       localStorage.removeItem('user');
       dispatch(logoutuser());
-      toast.success('Logged Out');
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +63,6 @@ export const asyncUpdateuser = (id,user) => async (dispatch, getState) => {
   try {
     const {data} = await axios.patch("/users/" + id, user);
     localStorage.setItem('user', JSON.stringify(data));
-    toast.success('profile update scuessfully')
   } catch (error) {
     toast.error('updation faild')
   }
@@ -74,7 +70,6 @@ export const asyncUpdateuser = (id,user) => async (dispatch, getState) => {
 export const asyncDeleteUser = (id) => async (dispatch, getState) => {
   try {
     await axios.delete(`/users/${id}`);
-    toast.success('user deleted sucessfully');
     dispatch(asyncLogOutUser())
   } catch (error) {
     toast.error('updation faild')
