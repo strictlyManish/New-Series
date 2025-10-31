@@ -16,8 +16,12 @@
       "isAdmin": false,
       "cart": [
         {
+          "productId": "15",
+          "quantity": 5
+        },
+        {
           "productId": "2",
-          "quantity": 2
+          "quantity": 1
         },
         {
           "productId": "14",

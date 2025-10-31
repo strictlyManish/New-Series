@@ -14,7 +14,7 @@ function Products() {
         <Link 
           key={obj.id} 
           to={`/product/${obj.id}`}
-          className='w-[15vw] h-fit p-3 rounded bg-gray-900'
+          className='w-[15vh] h-fit p-3 rounded bg-gray-900'
         >
           <div className='flex justify-center'>
             <img src={obj.image} alt={obj.title} className='h-30 object-contain' />
