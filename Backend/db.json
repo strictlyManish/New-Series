@@ -1,5 +1,20 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "p_NzF1o1xsZ_Fh6W2ialU",
+      "username": "manish",
+      "email": "manish@admin",
+      "password": "123456",
+      "isAdmin": true
+    },
+    {
+      "id": "KfZbwe3P8fDtylbOLWdou",
+      "username": "test",
+      "email": "test@gmail.com",
+      "password": "1234",
+      "isAdmin": false
+    }
+  ],
   "products": [
     {
       "id": "2",

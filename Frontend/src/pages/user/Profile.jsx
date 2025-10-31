@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { asyncDeleteUser, asyncUpdateuser } from '../../app/actions/userAction';
+import { asyncDeleteUser, asyncLogOutUser, asyncUpdateuser } from '../../app/actions/userAction';
 
 export default function Profile() {
   const { user } = useSelector((state) => state.useReducer);
@@ -20,7 +20,7 @@ export default function Profile() {
 
   const onSubmit = (data) => {
     console.log(data);
-    dispatch(asyncUpdateuser(user.id,data))
+    dispatch(asyncUpdateuser(user.id, data))
   };
 
   const DeleteHandler = (id) => {
@@ -29,7 +29,7 @@ export default function Profile() {
   };
 
   const LogOutuser = (id) => {
-    dispatch(asyncLogoutuser());
+    dispatch(asyncLogOutUser());
     navigate('/login')
   };
 
@@ -83,24 +83,26 @@ export default function Profile() {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 w-full"
-            >
-              Update
-            </button>
+            <div className='flex gap-3'>
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-md py-2 w-full cursor-pointer"
+              >
+                Update
+              </button>
 
+              <button
+                onClick={LogOutuser}
+                type="button"
+                className="bg-pink-500 hover:bg-red-600 text-white rounded-md py-2 w-full cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
             <button
               onClick={() => DeleteHandler(user.id)}
               type="button"
-              className="bg-red-500 hover:bg-red-600 text-white rounded-md py-2 w-full"
-            >
-              Delete Account
-            </button>
-            <button
-              onClick={LogOutuser}
-              type="button"
-              className="bg-pink-500 hover:bg-red-600 text-white rounded-md py-2 w-full"
+              className="bg-red-600 hover:bg-red-600 text-white rounded-md py-2 w-full cursor-pointer"
             >
               Delete Account
             </button>

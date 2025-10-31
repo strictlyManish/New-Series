@@ -13,7 +13,9 @@ function Navbar() {
       <NavLink to='/'>Home</NavLink>
       {user ? (
         <>
-          <NavLink to='/admin/create-product'>Create product</NavLink>
+
+          {user && user?.isAdmin && <NavLink to='/admin/create-product'>Create product</NavLink>}
+
           <NavLink to='/admin/user-profile'>Profile</NavLink>
 
         </>

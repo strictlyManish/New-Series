@@ -15,7 +15,7 @@ function App() {
   }, [])
 
   return (
-    <div className='bg-gray-800 text-white font-thin px-10 py-5 text-[20px]'>
+    <div className='bg-gray-800 text-white font-thin px-10 py-5 text-[20px] overflow-hidden select-none'>
       <Navbar />
       <Mainroutes />
     </div>
