@@ -1,33 +1,37 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { asyncUpdateuser } from './../app/actions/userAction';
 
 function Cart() {
   const user = useSelector((state) => state.useReducer.user);
-  const products = useSelector((state) => state.productReducer.products);
+  const dispatch = useDispatch();
 
-
-  const incresred = (index, obj) => {
+  const incresred = (index) => {
     const copyuser = { ...user, cart: [...user.cart] };
 
     copyuser.cart[index] = {
-      obj,
+      ...copyuser.cart[index],
       quantity: copyuser.cart[index].quantity + 1
-    }
-    console.log(copyuser)
-  }
-  const decresred = (index, obj) => {
+    };
+
+    dispatch(asyncUpdateuser(copyuser.id, copyuser));
+  };
+
+  const decresred = (index) => {
     const copyuser = { ...user, cart: [...user.cart] };
 
-    if (user.cart[index].quantity > 0) {
-      
+    if (copyuser.cart[index].quantity > 1) {
       copyuser.cart[index] = {
-        obj,
+        ...copyuser.cart[index],
         quantity: copyuser.cart[index].quantity - 1
-      }
+      };
     } else {
-      obj.cart = [];
+      copyuser.cart.splice(index, 1);
+      
     }
-    console.log(copyuser)
-  }
+
+    dispatch(asyncUpdateuser(copyuser.id, copyuser));
+  };
+
 
 
   const renderCart = user?.cart?.map((obj, index) => {
@@ -52,7 +56,7 @@ function Cart() {
           </div>
           <div className="flex items-center gap-3 mt-4">
             <button
-              onClick={() => decresred(index, obj)}
+              onClick={() => decresred(index)}
               className="w-8 h-8 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 font-bold transition-colors"
             >
               -
@@ -78,7 +82,7 @@ function Cart() {
       {user?.cart?.length > 0 ? (
         <div>{renderCart}</div>
       ) : (
-        <div className="text-center py-12">
+        <div className="text-center h-screen w-screen py-12">
           <p className="text-gray-200 text-lg">Your cart is empty</p>
         </div>
       )}
