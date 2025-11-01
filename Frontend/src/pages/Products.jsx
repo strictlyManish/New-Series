@@ -1,15 +1,37 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
+import { lazy, useEffect, useState } from 'react';
+import axios from "../utils/axios.config";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 function Products() {
-  const products = useSelector((state) => state.productReducer.products);
-  
+  const [products, setproducts] = useState([])
+  const [hasMore,setHasmore] = useState(true);
+
+  const fetchProduct = async () => {
+    const { data } = await axios.get(`/products?_limit=8&_start=${products.length}`);
+
+    if(data.length == 0){
+      setHasmore(false)
+    }else{
+      setHasmore(true);
+      
+      setproducts([...products,...data])
+    }
+
+  };
+
+  useEffect(() => {
+    fetchProduct()
+  })
+
+
   if (!products || products.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent mb-4"></div>
+          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-500-500 border-r-transparent mb-4"></div>
           <h2 className="text-xl text-gray-300">Loading products...</h2>
         </div>
       </div>
@@ -23,8 +45,19 @@ function Products() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Our Products</h1>
           <p className="text-gray-400">Discover amazing deals on quality products</p>
         </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+        <InfiniteScroll
+          className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+          dataLength={products.length}
+          next={fetchProduct}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <i>Discover amazing deals on quality products</i>
+            </p>
+          }
+        >
           {products.map((obj) => (
             <Link
               key={obj.id}
@@ -36,9 +69,10 @@ function Products() {
                 <img
                   src={obj.image}
                   alt={obj.title}
-                  className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
+                  loading='lazy'
+                  className="max-h-full  max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
                 />
-                
+
               </div>
 
               {/* Content Container */}
@@ -77,7 +111,7 @@ function Products() {
               </div>
             </Link>
           ))}
-        </div>
+        </InfiniteScroll>
       </div>
     </div>
   );

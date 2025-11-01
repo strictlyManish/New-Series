@@ -55,6 +55,7 @@ export default function ProductDetails() {
         <img
           src={product?.image}
           alt={product?.title}
+          loading="lazy"
           className="object-contain w-full h-[250px] sm:h-[300px] lg:h-[350px] rounded-lg bg-gray-900 p-2 sm:p-3"
         />
 

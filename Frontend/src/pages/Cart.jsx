@@ -32,8 +32,6 @@ function Cart() {
     dispatch(asyncUpdateuser(copyuser.id, copyuser));
   };
 
-
-
   const renderCart = user?.cart?.map((obj, index) => {
     return (
       <div

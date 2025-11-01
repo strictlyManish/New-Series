@@ -1,33 +1,36 @@
 import { Routes, Route } from 'react-router-dom';
-import Products from './../pages/Products';
-import Login from './../pages/Login';
-import Register from './../pages/Register';
-import CreateProduct from './../pages/admin/CreateProduct';
-import ProductDetailes from '../components/ProductDetailes';
-import Profile from './../pages/user/Profile';
-import PageNotFound from './../PageNotFound';
+import { lazy, Suspense } from 'react';
 import Atuhentication from './Atuhentication';
-import Cart from '../pages/Cart';
-
-
+import { Loader } from 'lucide-react';
+// Lazy imports
+const Products = lazy(() => import('./../pages/Products'));
+const Login = lazy(() => import('./../pages/Login'));
+const Register = lazy(() => import('./../pages/Register'));
+const CreateProduct = lazy(() => import('./../pages/admin/CreateProduct'));
+const ProductDetailes = lazy(() => import('../components/ProductDetailes'));
+const Profile = lazy(() => import('./../pages/user/Profile'));
+const Cart = lazy(() => import('../pages/Cart'));
+const PageNotFound = lazy(() => import('./../PageNotFound'));
 
 function Mainroutes() {
   return (
-    <Routes>
+    <Suspense fallback={<div className='animate-spin flex h-screen w-screen items-center justify-center overflow-hidden'><Loader /></div>}>
+      <Routes>
 
-      <Route path='/' element={<Products />} />
+        <Route path='/' element={<Products />} />
 
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
-      <Route path='/admin/create-product' element={<Atuhentication><CreateProduct /></Atuhentication>} />
-      <Route path='/admin/user-profile' element={<Atuhentication><Profile /></Atuhentication>} />
-      <Route path='/product/:id' element={<Atuhentication><ProductDetailes /></Atuhentication>} />
-      <Route path='/cart' element={<Atuhentication><Cart/></Atuhentication>} />
+        <Route path='/admin/create-product' element={<Atuhentication><CreateProduct /></Atuhentication>} />
+        <Route path='/admin/user-profile' element={<Atuhentication><Profile /></Atuhentication>} />
+        <Route path='/product/:id' element={<Atuhentication><ProductDetailes /></Atuhentication>} />
+        <Route path='/cart' element={<Atuhentication><Cart /></Atuhentication>} />
 
-      <Route path='*' element={<PageNotFound />} />
+        <Route path='*' element={<PageNotFound />} />
 
-    </Routes>
+      </Routes>
+    </Suspense>
   )
 }
 
