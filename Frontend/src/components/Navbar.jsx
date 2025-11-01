@@ -17,6 +17,7 @@ function Navbar() {
           {user && user?.isAdmin && <NavLink to='/admin/create-product'>Create product</NavLink>}
 
           <NavLink to='/admin/user-profile'>Profile</NavLink>
+          <NavLink to='/cart'>Cart</NavLink>
 
         </>
       ) : (

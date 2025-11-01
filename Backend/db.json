@@ -14,20 +14,7 @@
       "email": "test@gmail.com",
       "password": "1234",
       "isAdmin": false,
-      "cart": [
-        {
-          "productId": "15",
-          "quantity": 5
-        },
-        {
-          "productId": "2",
-          "quantity": 1
-        },
-        {
-          "productId": "14",
-          "quantity": 1
-        }
-      ]
+      "cart": []
     }
   ],
   "products": [

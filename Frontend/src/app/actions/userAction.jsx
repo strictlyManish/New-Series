@@ -63,10 +63,13 @@ export const asyncUpdateuser = (id,user) => async (dispatch, getState) => {
   try {
     const {data} = await axios.patch("/users/" + id, user);
     localStorage.setItem('user', JSON.stringify(data));
+    dispatch(asyncGetCurrentUser())
   } catch (error) {
     toast.error('updation faild')
   }
 };
+
+
 export const asyncDeleteUser = (id) => async (dispatch, getState) => {
   try {
     await axios.delete(`/users/${id}`);
