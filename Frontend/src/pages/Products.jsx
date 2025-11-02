@@ -1,23 +1,23 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { lazy, useEffect, useState } from 'react';
 import axios from "../utils/axios.config";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { loadLazyproduct } from '../app/reducers/productSlice';
 
 function Products() {
-  const [products, setproducts] = useState([])
-  const [hasMore,setHasmore] = useState(true);
-
+  const { products } = useSelector(state => state.productReducer)
+  const [hasMore, setHasmore] = useState(true);
+  const dispatch = useDispatch();
   const fetchProduct = async () => {
     const { data } = await axios.get(`/products?_limit=8&_start=${products.length}`);
 
-    if(data.length == 0){
+    if (data.length == 0) {
       setHasmore(false)
-    }else{
+    } else {
       setHasmore(true);
-      
-      setproducts([...products,...data])
+      dispatch(loadLazyproduct(data))
     }
 
   };
